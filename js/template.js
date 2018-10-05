@@ -291,8 +291,8 @@
            } else if (input.events[index].data.image != undefined) {
                var img = document.createElement('img');
                img.setAttribute('src', 'images/Richdata Graph Alternative.png');
-               img.style.maxWidth = '635px';
-               img.style.maxHeight = '424px';
+               img.style.maxWidth = '100%';
+               img.style.maxHeight = '100%';
                var innerEvent = event.lastChild;
                innerEvent.appendChild(img);
            }
