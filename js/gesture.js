@@ -1,7 +1,7 @@
-var wrapper = document.body.querySelectorAll('.image-wrapper')[4],
-    transVal = document.body.querySelectorAll('.trans span')[4],
-    zoomVal = document.body.querySelectorAll('.zoom span')[4],
-    brightVal = document.body.querySelectorAll('.brightness span')[4];
+var wrapper = document.body.querySelector('.image-wrapper'),
+    transVal = document.body.querySelector('.trans span'),
+    zoomVal = document.body.querySelector('.zoom span'),
+    brightVal = document.body.querySelector('.brightness span'),
     imageDiagonal = 0,
     zoomValue = 100,
     start = null,
@@ -15,8 +15,7 @@ var wrapper = document.body.querySelectorAll('.image-wrapper')[4],
         value: 100,
         rotate: 0
     };
-
-wrapper.addEventListener('pointerdown', onPointerDown)
+wrapper.addEventListener('pointerdown', onPointerDown);
 
 function rotation(x, y) {
     wrapper.style.backgroundPosition = wrapper.style.backgroundPosition.split(' ').map((e, i) => {

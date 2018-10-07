@@ -227,6 +227,8 @@
                 if(event.data.type != 'graph'){
                     eventContainer.querySelector('.image').remove();
                 }
+                eventContainer.querySelector('.image-wrapper').remove();
+                eventContainer.querySelector('.image-info').remove();
             }
             if (event.data.track) {
                 eventContainer.querySelector('.track-icon').setAttribute('src', event.data.albumcover);
