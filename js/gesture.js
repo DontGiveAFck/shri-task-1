@@ -24,8 +24,8 @@ function rotation(x, y) {
             if (i === 0) {
                 var limit = 3600;
 
-                position = +rotate.posX;
-                position += +(x - pointers[0].x);
+                position = parseFloat(rotate.posX);
+                position += parseFloat(x - pointers[0].x);
 
                 if (position > limit) {
                     position = limit;
@@ -40,8 +40,8 @@ function rotation(x, y) {
             } else if (i == 1) {
                 var maxY = 100;
 
-                position = +rotate.posY;
-                position += -1 * +(y - pointers[0].y);
+                position = parseFloat(rotate.posY);
+                position += -1 * parseFloat(y - pointers[0].y);
 
                 if (position < 0) position = 0;
                 if (position > maxY) position = 100;
