@@ -160,163 +160,130 @@
         ]
     }
 
+    var isImageAdded = false;
 
-    //get template
     var template = document.querySelector('.template');
-
-    //create sections with inside data for events in template
-    for (var i = 0; i < input.events.length; i++) {
-
-        var event = document.createElement('section');
-        event.classList.add('event');
-        // inside items into each event
-
-        var insideItems = [
-            document.createElement('div'),
-            document.createElement('div'),
-            document.createElement('div'),
-            document.createElement('div')
-        ];
-
-        // add class for each inside item
-        insideItems[2].classList.add('description');
-        insideItems[3].classList.add('data');
-
-        insideItems[0] = document.createElement('div');
-        insideItems[0].classList.add('icon-title-row');
-        insideItems[1] = document.createElement('div');
-        insideItems[1].classList.add('source-time-row');
-
-        var icon = document.createElement('div');
-        icon.classList.add('icon');
-        var title = document.createElement('div');
-        title.classList.add('title');
-        var source = document.createElement('div');
-        source.classList.add('source');
-        var time = document.createElement('div');
-        time.classList.add('time');
-
-        insideItems[0].appendChild(icon);
-        insideItems[0].appendChild(title);
-
-        insideItems[1].appendChild(source);
-        insideItems[1].appendChild(time);
-
-
-        // append inside items to event section
-
-        if (input.events[i].type == 'critical') {
-            console.log('critical');
-            var criticalContent = document.createElement('div');
-            criticalContent.classList.add('event');
-            insideItems.forEach(function (item, index) {
-                if (index >= 2) {
-                    criticalContent.appendChild(item);
-                } else {
-                    event.appendChild(item);
-                }
-            });
-            event.appendChild(criticalContent);
-        } else {
-            console.log(input.events[i].type)
-            insideItems.forEach(function (item) {
-                event.appendChild(item);
-            });
-        }
-
-        // add section to template
-        template.content.appendChild(event);
+    var events = document.querySelector('.events');
+    var eventIcons = {
+        'ac-white': 'images/ac-white.svg',
+        'ac': 'images/ac-white.svg',
+        'battery': 'images/battery.svg',
+        'fridge': 'images/fridge.svg',
+        'kettle': 'images/kettle.svg',
+        'key': 'images/key.svg',
+        'music': 'images/music.svg',
+        'robot-cleaner': 'images/robot-cleaner.svg',
+        'router': 'images/router.svg',
+        'stats': 'images/stats.svg',
+        'thermal': 'images/thermal.svg',
+        'cam': 'images/cam-white.svg'
     }
-
-    // get events
-    var events = template.content.querySelectorAll('.event:not(div)');
-    console.log(events);
-
-    //add content in inside items
-    events.forEach(function (event, index) {
-        event.children[0].children[1].innerText = input.events[index].title;
-        event.children[1].children[0].innerText = input.events[index].source;
-        event.children[1].children[1].innerText = input.events[index].time;
-        if (input.events[index].type == 'info') {
-            event.children[0].children[0].classList.add('icon-' + input.events[index].icon);
-            event.children[2].innerText = input.events[index].description;
-        } else if(input.events[index].type == 'critical'){
-            event.children[0].children[0].classList.add('icon-' + input.events[index].icon + '-white');
-            console.log('description', input.events[index].description)
-            event.children[2].children[0].innerText = input.events[index].description;
-            event.classList.add('event-critical');
+    input.events.forEach(function (event, index) {
+        var eventContainer = document.importNode(template.content, true);
+        console.log(eventContainer)
+        eventContainer.querySelector('.icon').setAttribute('src', eventIcons[event.icon]);
+        eventContainer.querySelector('.title').textContent = event.title;
+        eventContainer.querySelector('.source').textContent = event.source;
+        eventContainer.querySelector('.time').textContent = event.time;
+        if (event.description) {
+            eventContainer.querySelector('.description').textContent = event.description;
+        } else {
+            eventContainer.querySelector('.description').remove();
         }
+        if (event.data) {
+            if (event.data.buttons) {
+                eventContainer.querySelector('.data .btn-positive').textContent = event.data.buttons[0];
+                eventContainer.querySelector('.data .btn-negative').textContent = event.data.buttons[1];
+            } else {
+                eventContainer.querySelector('.data .buttons-row').remove();
+            }
+            if (event.data.humidity) {
+                eventContainer.querySelector('.humidity').textContent = 'Влажность:';
+                eventContainer.querySelector('.temp').textContent = 'Tемпература:';
+                eventContainer.querySelector('.temp-value').textContent = event.data.temperature + ' C';
+                eventContainer.querySelector('.humidity-value').textContent = event.data.humidity + ' %';
+            } else {
+                eventContainer.querySelector('.data .temp-humidity-row').remove();
+            }
+            if (event.data.type == 'graph') {
+                eventContainer.querySelector('.image').setAttribute('src', 'images/Richdata.png');
+            }
+            if (event.data.image) {
+                    var img = eventContainer.querySelector('.image');
+                    img.setAttribute('src', 'images/md.png');
+                    img.setAttribute('srcset', 'images/sm.png 832w, images/lg.png 2496w');
+                    img.setAttribute('sizes', '(max-width: 648px) 832px, (min-width: 1600) 2496px');
 
-        //parse data property
-       if (input.events[index].data != undefined) {
-           if (input.events[index].data.type == 'graph') {
-               var graphImage = document.createElement('img');
-               graphImage.classList.add('bg-graph');
-               graphImage.setAttribute('src', 'images/Richdata.png');
-               event.appendChild(graphImage);
-           } else if(input.events[index].data.temperature != undefined) {
-               var tempHumidityRow = document.createElement('div');
-               tempHumidityRow.classList.add('temp-humidity-row');
-               var temp = document.createElement('div');
-               temp.classList.add('data');
-               temp.innerText = 'Температура: ';
-               var tempValue = document.createElement('span');
-               tempValue.classList.add('value');
-               tempValue.innerText = input.events[index].data.temperature + ' C';
-               var humidity = document.createElement('div');
-               humidity.classList.add('data');
-               humidity.innerText = 'Влажность: ';
-               var humidityValue = document.createElement('span');
-               humidityValue.classList.add('value');
-               humidityValue.innerText = input.events[index].data.humidity + ' %';
-
-               temp.appendChild(tempValue);
-               humidity.appendChild(humidityValue);
-               tempHumidityRow.appendChild(temp);
-               tempHumidityRow.appendChild(humidity);
-
-               event.appendChild(tempHumidityRow);
-           } else if (input.events[index].data.buttons != undefined) {
-                var buttonsRow = document.createElement('div');
-                buttonsRow.classList.add('buttons-row');
-                var posBtn = document.createElement('div');
-                posBtn.classList.add('btn', 'btn-positive');
-                posBtn.innerText = 'Да';
-                var negBtn = document.createElement('div');
-                negBtn.classList.add('btn', 'btn-negative');
-                negBtn.innerText = 'Нет';
-                buttonsRow.appendChild(posBtn);
-                buttonsRow.appendChild(negBtn);
-                event.appendChild(buttonsRow);
-           } else if (input.events[index].data.image != undefined) {
-               var img = document.createElement('img');
-               img.setAttribute('src', 'images/Richdata Graph Alternative.png');
-               img.style.maxWidth = '100%';
-               img.style.maxHeight = '100%';
-               var innerEvent = event.lastChild;
-               innerEvent.appendChild(img);
-           }
-       }
-
-       // add size of an event
-       switch (input.events[index].size) {
-           case 's': {
-               event.classList.add('event-s');
-               break;
-           }
-           case 'm': {
-               event.classList.add('event-m');
-               break;
-           }
-           case 'l': {
-               event.classList.add('event-l');
-               break;
-           }
-       }
+                    if(isTouchDevice() && !isImageAdded) {
+                        isImageAdded = true;
+                        var wrapper = eventContainer.querySelector('.image-wrapper');
+                        wrapper.style.backgroundImage = 'url("images/sm.png")';
+                        wrapper.style.width = '100%';
+                        img.style.visibility = 'hidden';
+                        img.style.pointerEvents = 'none';
+                        eventContainer.querySelector('.image-info').style.display = 'flex';
+                    }
+            } else {
+                if(event.data.type != 'graph'){
+                    eventContainer.querySelector('.image').remove();
+                }
+            }
+            if (event.data.track) {
+                eventContainer.querySelector('.track-icon').setAttribute('src', event.data.albumcover);
+                eventContainer.querySelector('.track-title').textContent = `${event.data.artist} - ${event.data.track.name}`;
+                eventContainer.querySelector('.track-length').textContent = event.data.track.length;
+                eventContainer.querySelector('.volume-range').value = event.data.volume;
+                eventContainer.querySelector('.volume-percentage').textContent = event.data.volume + '%';
+            } else {
+                eventContainer.querySelector('.music').remove();
+            }
+        } else {
+            eventContainer.querySelector('.data').remove();
+        }
+        events.appendChild(eventContainer);
+        switch(event.size) {
+            case 'l': {
+                events.lastElementChild.classList.add('event-l');
+                break;
+            }
+            case 's': {
+                events.lastElementChild.classList.add('event-s');
+                break;
+            }
+            case 'm': {
+                events.lastElementChild.classList.add('event-m');
+            }
+        }
+        if (event.type == 'critical') {
+            events.lastElementChild.classList.add('event-critical');
+            events.lastElementChild.children[4].classList.add('event');
+            events.lastElementChild.querySelector('.arrow-cross').setAttribute('src', 'images/cross-white.svg');
+        }
     });
 
-    //extract template into var
-    var eventList = document.importNode(template.content, true);
-    //append content to the page
-    document.querySelector('.events').appendChild(eventList);
+    function isTouchDevice() {
+        var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+        var mq = function(query) {
+            return window.matchMedia(query).matches;
+        }
+
+        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+            return true;
+        }
+        var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
+        return mq(query);
+    }
+
+    if (isTouchDevice()) {
+        var icons = document.body.querySelectorAll('.arrow-cross, .arrow-right');
+        icons.forEach(function (icon) {
+           icon.style.display = 'block';
+        });
+    }
+
+    document.body.querySelector('.icon-menu').addEventListener('click', function () {
+            document.body.querySelector('nav ul').classList.toggle('menu-active');
+            document.body.querySelector('.icon-menu').classList.toggle('icon-menu-open');
+            document.body.querySelector('.icon-menu').classList.toggle('icon-menu-close');
+        });
 })();

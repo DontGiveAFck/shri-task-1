@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="robots" content="noindex">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -22,47 +23,85 @@
                 <li><a href="#">Устройства</a></li>
                 <li><a href="#">Сценарии</a></li>
             </ul>
+            <div class="icon-menu icon-menu-open"></div>
         </nav>
     </header>
     <hr>
     <main>
         <h1 class="title">Лента событий</h1>
         <section class="events">
-            <!--
-            <section class="event event-l"></section>
-            <section class="event event-s"></section>
-            <section class="event event-s"></section>
-            <section class="event event-s"></section>
-            <section class="event event-s"></section>
-            <section class="event event-s"></section>
-            <section class="event event-m"></section>
-            <section class="event event-s"></section>
-            -->
         </section>
 
         <template class="template">
+            <section class="event">
+                <img src="images/Next.svg" alt="" class="arrow-right">
+                <img src="images/cross.svg" alt="" class="arrow-cross">
+                <div class="icon-title-row">
+                    <img class="icon">
+                    <div class="title"></div>
+                </div>
+                <div class="source-time-row">
+                    <div class="source"></div>
+                    <div class="time"></div>
+                </div>
+                <div class="event-container">
+                    <div class="description"></div>
+                    <div class="data">
+                        <div class="buttons-row">
+                            <div class="btn btn-positive"></div>
+                            <div class="btn btn-negative"></div>
+                        </div>
+                        <div class="image-wrapper"></div>
+                        <img class="image">
+                        <div class="image-info">
+                            <p class="trans">Перемещение: <span></span></p>
+                            <p class="brightness">Яркость: <span></span></p>
+                            <p class="zoom">Увеличение: <span></span></p>
+                        </div>
+                        <div class="temp-humidity-row">
+                            <span class="temp"></span>&nbsp;<span class="temp-value"></span>
+                            <span class="humidity"></span>&nbsp;<span class="humidity-value"></span>
+                        </div>
+                        <div class="music">
+                            <div class="track-row">
+                                <img src="" alt="" class="track-icon">
+                                <div class="track">
+                                    <p class="track-title"></p>
+                                    <div class="range-length-row">
+                                        <input type="range" class="track-range">
+                                        <span class="track-length"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="volume-row">
+                                <img src="images/Prev.svg" alt="prev" class="button-left">
+                                <img src="images/Prev.svg" alt="next" class="button-right">
+                                <input type="range" class="volume-range">
+                                <span class="volume-percentage"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </template>
     </main>
-    <hr>
+    <hr class="before-footer">
     <footer class="footer">
         <ul>
             <li><a href="#">Помощь</a></li>
             <li><a href="#">Обратная связь</a></li>
             <li><a href="#">Разработчикам</a></li>
             <li><a href="#">Условия использования</a></li>
+            <li><a href="files/license.pdf">Ссылка на лицензию</a></li>
         </ul>
         <span class="corp">© 2001–2017  ООО «Яндекс»</span>
     </footer>
 </div>
 <script src="js/template.js"></script>
+<script src="js/gesture.js"></script>
 </body>
 <style>
-    .container {
-        height: 100%;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-        grid-auto-rows: 100px;
-        grid-gap: 3px;
-    }
+
 </style>
 </html>
