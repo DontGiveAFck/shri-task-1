@@ -569,10 +569,10 @@ p.track-title {
 }
 
 .icon-menu-close {
-    background: url("images/menu-cross.png") no-repeat;
+    background: url("../images/menu-cross.png") no-repeat;
 }
 .icon-menu-open {
-    background: url("images/icon_list_m.png") no-repeat;
+    background: url("../images/icon_list_m.png") no-repeat;
 
 }
 
