@@ -180,7 +180,6 @@
     }
     input.events.forEach(function (event, index) {
         var eventContainer = document.importNode(template.content, true);
-        console.log(eventContainer)
         eventContainer.querySelector('.icon').setAttribute('src', eventIcons[event.icon]);
         eventContainer.querySelector('.title').textContent = event.title;
         eventContainer.querySelector('.source').textContent = event.source;
