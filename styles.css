@@ -605,6 +605,13 @@ p.track-title {
     .event.event-l .description {
         font-size: 18px;
     }
+    .event.event-s .source-time-row {
+        flex-direction: row;
+    }
+
+    .event.event-s .source-time-row .time {
+        margin-top: 0;
+    }
 
     .event .description {
         font-size: 18px;
