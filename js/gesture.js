@@ -51,7 +51,7 @@
     function zoom(event) {
         var posX = parseInt(wrapper.style.backgroundSize) || 0;
         if (posX) {
-            wrapper.style.backgroundSize = `${posX + event.clientX}px ${posX + event.clientX}px`;
+            wrapper.style.backgroundSize = `${posX + (event.clientX / 10)}px ${posX + (event.clientX / 10)}px`;
         } else {
             wrapper.style.backgroundSize = '1px'
         }
