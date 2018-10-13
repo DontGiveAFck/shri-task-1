@@ -5,14 +5,14 @@
 html {
     font-size: 12px;
 }
+body::-webkit-scrollbar {
+    width: 0;
+}
 a {
     text-decoration: none;
 }
 ul {
     list-style: none;
-}
-body {
-    position: relative;
 }
 
 h1.title {
@@ -74,16 +74,47 @@ nav ul li .selected {
     opacity: 1;
 }
 .wrapper {
-    height: calc(100vh - 30px);
-    width: calc(100vw - 30px);
+    height: 100%;
+    width: 100%;
     display: grid;
-    grid-template-columns: 300px 300px;
-    grid-template-rows: 200px 200px;
+    /*
+    grid-template-columns: 22vh 22vh;
+    grid-template-rows: 15vh 15vh;
+    */
     grid-gap: 20px;
+    grid-template-areas:
+        "v1 v2"
+        "v3 v4";
+}
+#video-1 {
+    grid-area: v1;
+}
+#video-2{
+    grid-area: v2;
+}
+#video-3 {
+    grid-area: v3;
+}
+#video-4 {
+    grid-area: v4;
+}
+.controls-panel {
+    background-color: lightseagreen;
+    opacity: 0.7;
+    z-index: 2;
+    position: absolute;
+    bottom: 0;
+    left: 35%;
+    display: none;
+    height: 80px;
+    width: 320px;
+}
+.controls-panel-opened {
+    display: flex;
     align-items: center;
-    justify-items: center;
 }
 .video {
+    border-radius: 20px;
     cursor: pointer;
     transition-duration: .2s;
     border: 1px solid black;
@@ -91,12 +122,19 @@ nav ul li .selected {
     width: 300px;
     height: 200px;
 }
+video:hover {
+    box-shadow: 0 3px 10px blueviolet;
+}
 .video-opened {
-    position: absolute;
+    border-radius: 0;
     z-index: 1;
-    transform: scale(3) translate(13.05vw, 13vh);
+}
+.video-opened:hover {
+    box-shadow: none;
 }
 .bg {
+    top:0;
+    left: 0;
     position: absolute;
     display: none;
     width: 100%;
@@ -114,6 +152,9 @@ nav ul li .selected {
     border: 1px solid black;
     color: #000000;
     padding: 5px;
+    width: 30px;
+    height: 10px;
+    display: block;
 }
 .btn:hover {
     box-shadow: 0 0 10px red;
@@ -125,9 +166,13 @@ nav ul li .selected {
     color: #ffffff;
     background-color: #000000;
 }
-#video-1 {
-}
-canvas {
+.sound-diagram {
+    display: none;
+    position: absolute;
+
     margin-left: 50px;
     border: 1px solid black;
+}
+.sound-diagram-opened {
+    display: block;
 }
