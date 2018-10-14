@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 
+// to prevent CORS error
 app.use(cors());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -13,6 +14,8 @@ app.use(function(req, res, next) {
 });
 
 app.use(express.static('./public'));
+
+//routes require
 app.use('/', require('./server/routes/status'));
 app.use('/api', require('./server/routes/api'));
 

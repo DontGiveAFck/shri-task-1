@@ -7,8 +7,8 @@ const eventTypes = ['info', 'critical'];
 module.exports = {
     getEvents: function (req, res) {
         // for pagination
-        let limit = req.query.limit || Number.MAX_SAFE_INTEGER;
-        let offset = req.query.offset || 0;
+        let limit = req.query.limit || req.body.limit || Number.MAX_SAFE_INTEGER;
+        let offset = req.query.offset || req.body.offset || 0;
 
         //if type specified
         let type = req.query.type || req.body.type;

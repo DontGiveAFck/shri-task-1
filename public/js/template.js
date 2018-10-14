@@ -3,7 +3,6 @@
         xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                console.log(this.response)
                 return addEvents(JSON.parse(this.response));
             }
         };
@@ -14,7 +13,6 @@
     function addEvents(eventsList) {
         var input = {};
         input.events = eventsList;
-
         var isImageAdded = false;
         var template = document.querySelector('.template');
         var events = document.querySelector('.events');
@@ -32,6 +30,7 @@
             'thermal': 'images/thermal.svg',
             'cam': 'images/cam-white.svg'
         }
+
         input.events.forEach(function (event, index) {
             var eventContainer = document.importNode(template.content, true);
             eventContainer.querySelector('.icon').setAttribute('src', eventIcons[event.icon]);

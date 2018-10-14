@@ -14,7 +14,7 @@
         <img src="images/logo.png" alt="logo">
     </a>
     <nav>
-        <ul>
+        <ul class="menu">
             <li><a href="/">События</a></li>
             <li><a href="#">Сводка</a></li>
             <li><a href="#">Устройства</a></li>
@@ -28,27 +28,27 @@
 <main>
     <h1 class="title">Видеонаблюдение</h1>
     <div class="wrapper">
-        <video id="video-1" class="video" muted autoplay></video>
-        <video id="video-2" class="video" muted autoplay></video>
-        <video id="video-3" class="video" muted autoplay></video>
-        <video id="video-4" class="video" muted autoplay></video>
+            <video id="video-1" class="video" muted autoplay></video>
+            <video id="video-2" class="video" muted autoplay></video>
+            <video id="video-3" class="video" muted autoplay></video>
+            <video id="video-4" class="video" muted autoplay></video>
         <div class="controls-panel">
             <button class="btn btn-all-cameras">Все камеры</button>
-            <button class="btn">Анализатор громкости</button>
-            <span class="brightness">
+            <button class="btn btn-analyzator">Анализатор громкости</button>
+            <span class="control brightness">
                 Яркость <br>
                 <input type="range" min="0" max="200">
-                <span></span>
+                <span>100</span>
             </span>
-            <span class="contrast">
+            <span class="control contrast">
                 Контрастность <br>
                 <input type="range" min="0" max="200">
-                <span></span>
+                <span>100</span>
             </span>
-            <span class="volume">
+            <span class="control volume">
                 Уровень звука <br>
                 <input type="range" min="0" max="100">
-                <span></span>
+                <span>50</span>
             </span>
         </div>
         <canvas width="256px" height="256px" class="sound-diagram"></canvas>
@@ -58,48 +58,7 @@
 </main>
 <script src="js/cameras.js"></script>
 <script>
-    console.log('location ', document.location)
-    function initVideo(video, url) {
-        if (Hls.isSupported()) {
-            var hls = new Hls();
-            hls.loadSource(url);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                video.play();
-            });
-            console.log('hls')
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8';
-            video.addEventListener('loadedmetadata', function () {
-                video.play();
-            });
-        }
-    }
 
-    function getUrl(path) {
-        return encodeURIComponent(`${document.location.protocol}//${document.location.hostname}:${document.location.port}/streams/${path}/master.m3u8`)
-    }
-    console.log(getUrl('hall'))
-
-    initVideo(
-        document.getElementById('video-1'),
-        'http://localhost:9191/master?url='+ getUrl('sosed')
-    );
-
-    initVideo(
-        document.getElementById('video-2'),
-        'http://localhost:9191/master?url='+ getUrl('cat')
-    );
-
-    initVideo(
-        document.getElementById('video-3'),
-        'http://localhost:9191/master?url='+ getUrl('dog')
-    );
-
-    initVideo(
-        document.getElementById('video-4'),
-        'http://localhost:9191/master?url='+ getUrl('hall')
-    );
 
 </script>
 </body>
