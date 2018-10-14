@@ -39,7 +39,7 @@ npm start <br>
 Принимает параметр type, значения info и/или critical (например, localhost:8000/api/events?type=info:critical ивенты с типом info и critical)
 Если хоть один тип будет некорректен - вернет ошибку 400.
 3. POST localhost:8000/api/events - возвращает тоже самое что и GET, только параметры в теле запроса в формате xxx-url-encoded.
-4. Другие роуты (кроме '/' и 'cameras.html' - нужны для реализации пункта 5) возвращают <h1>Page not found</h1> , code 404.
+4. Другие роуты (кроме '/' и 'cameras.html' - нужны для реализации пункта 5) возвращают Page not found , code 404.
 5. Соединил с версткой из первого задания - при открытии страницы localhost:8080 ajax GET запрос на 'api/events' - в параметрах также можно указывать type, limit, offset.
 6. Пагинация на GET запросы параметры - limit и offset, например:
     http://localhost:8000?type=critical&offset=1&limit=1 - вернет критический ивент со сдвигом 1 и пределом 1.
