@@ -121,6 +121,7 @@ nav ul li .selected {
     background-color: black;
     width: 300px;
     height: 200px;
+    object-fit: fill;
 }
 video:hover {
     box-shadow: 0 3px 10px blueviolet;
