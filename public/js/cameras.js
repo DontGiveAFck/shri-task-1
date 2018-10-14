@@ -97,7 +97,7 @@
        ctx.clearRect(0, 0, canvas.width, canvas.height);
        data.forEach(function (soundValue, i) {
            ctx.fillStyle = '#ff0000';
-           ctx.fillRect(i, canvas.height - soundValue, i + 1, soundValue);
+           ctx.fillRect(i, canvas.height - soundValue / 4, i + 1, soundValue);
        });
    }
 
@@ -146,7 +146,7 @@
    });
 
    // hamburger menu
-    document.body.querySelector('.icon-menu').addEventListener('click', function () {
+    document.body.querySelector('.menu').addEventListener('click', function () {
         document.body.querySelector('nav ul').classList.toggle('menu-active');
         document.body.querySelector('.icon-menu').classList.toggle('icon-menu-open');
         document.body.querySelector('.icon-menu').classList.toggle('icon-menu-close');

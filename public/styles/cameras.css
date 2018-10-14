@@ -198,6 +198,8 @@ video:hover {
     background-color: #979797;
     opacity: 0.9;
     border-radius: 10px;
+    width: 100%;
+    max-height: 64px;
 }
 .sound-diagram-opened {
     display: block;
@@ -229,7 +231,7 @@ video:hover {
         grid-template-areas: "v1" "v2" "v3" "v4";
     }
 
-    nav ul {
+    ul.menu {
         z-index: 1;
         transition: 0.1s ease-out;
         top: 0px;
@@ -244,12 +246,12 @@ video:hover {
         padding: 10px 0;
         box-shadow: 0 0 10px #A1A1A1;
     }
-    nav ul li {
+    ul.menu li {
         padding: 5px;
         margin: 0;
     }
 
-    nav ul li a {
+    ul.menu li a {
         font-size: 20px;
         font-weight: normal;
     }
@@ -273,10 +275,6 @@ video:hover {
 }
 
 @media (max-width: 400px) {
-    .sound-diagram {
-        top: 0;
-        left: 0;
-    }
     html {
         font-size: 10px;
     }
