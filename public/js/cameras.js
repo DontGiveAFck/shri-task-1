@@ -146,8 +146,9 @@
    });
 
    // hamburger menu
-    document.body.querySelector('.menu').addEventListener('click', function () {
-        document.body.querySelector('nav ul').classList.toggle('menu-active');
+    document.body.querySelector('.icon-menu').addEventListener('click', function () {
+        document.body.querySelector('.menu').classList.toggle('menu-active');
+        console.log(document.body.querySelector('.menu'))
         document.body.querySelector('.icon-menu').classList.toggle('icon-menu-open');
         document.body.querySelector('.icon-menu').classList.toggle('icon-menu-close');
     });

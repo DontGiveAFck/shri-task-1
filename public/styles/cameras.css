@@ -49,19 +49,19 @@ nav {
     width: 100%;
 }
 
-nav ul {
+.menu {
     display: flex;
 }
 
-nav ul li {
+.menu li {
     margin-right: 28px;
 }
 
-nav ul li:last-child {
+.menu li:last-child {
     margin-right: 0;
 }
 
-nav ul li a{
+.menu li a{
     font-weight: bold;
     opacity: 0.6;
     font-family: Arial, sans-serif;
@@ -70,7 +70,7 @@ nav ul li a{
     line-height: 20px;
 }
 
-nav ul li .selected {
+.menu li .selected {
     opacity: 1;
 }
 .wrapper {
@@ -231,7 +231,7 @@ video:hover {
         grid-template-areas: "v1" "v2" "v3" "v4";
     }
 
-    ul.menu {
+    .menu {
         z-index: 1;
         transition: 0.1s ease-out;
         top: 0px;
@@ -246,12 +246,16 @@ video:hover {
         padding: 10px 0;
         box-shadow: 0 0 10px #A1A1A1;
     }
-    ul.menu li {
+    .menu-active {
+        transform: scaleY(1);
+        top: 50px;
+    }
+    .menu li {
         padding: 5px;
         margin: 0;
     }
 
-    ul.menu li a {
+    .menu li a {
         font-size: 20px;
         font-weight: normal;
     }
