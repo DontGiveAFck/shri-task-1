@@ -198,7 +198,7 @@ video:hover {
     background-color: #979797;
     opacity: 0.9;
     border-radius: 10px;
-    width: 100%;
+    width: 50%;
     max-height: 64px;
 }
 .sound-diagram-opened {
