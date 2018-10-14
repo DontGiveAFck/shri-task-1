@@ -12,7 +12,6 @@ module.exports = {
 
         //if type specified
         let type = req.query.type || req.body.type;
-        console.log('type, ', type)
         if (req.query.type) {
             let types = req.query.type.split(':');
             if (this._isTypesValid(types)) {

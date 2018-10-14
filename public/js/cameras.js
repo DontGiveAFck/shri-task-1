@@ -85,7 +85,6 @@
 
                // listen for audio process
                node.onaudioprocess = function () {
-                   console.log('ps')
                    analyzer.getByteFrequencyData(bands);
                    setTimeout(draw(bands, ctx), 500);
                }
