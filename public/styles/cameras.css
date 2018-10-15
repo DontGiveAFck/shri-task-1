@@ -191,13 +191,10 @@ video:hover {
 .sound-diagram {
     display: none;
     position: absolute;
-    border: 1px solid black;
     z-index: 2;
     right: 0;
     bottom: 0;
-    background-color: #979797;
     opacity: 0.9;
-    border-radius: 10px;
     width: 50%;
     max-height: 64px;
 }
