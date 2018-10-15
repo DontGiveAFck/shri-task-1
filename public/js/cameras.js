@@ -65,39 +65,44 @@
            if (!video.classList.contains('video-opened')) {
                video.muted = false;
                videoScreenFit(video);
-               //audio context creation
-               var context =  new AudioContext();
-               var node = context.createScriptProcessor(2048, 1, 1);
-               var source = context.createMediaElementSource(video);
-
-               //analyzer creation
-               var analyzer = context.createAnalyser();
-               analyzer.smoothingTimeConstant = 0.3;
-               analyzer.fftSize = 512;
-
-               var bands = new Uint8Array(analyzer.frequencyBinCount);
-               //create audio source
-               source.connect(analyzer);
-               analyzer.connect(node);
-               node.connect(context.destination);
-               source.connect(context.destination);
-               var ctx = canvas.getContext('2d');
-
-               // listen for audio process
-               node.onaudioprocess = function () {
-                   analyzer.getByteFrequencyData(bands);
-                   setTimeout(draw(bands, ctx), 500);
-               }
+               analyzer(video);
            }
        });
    });
 
+   function analyzer(video) {
+       //context creation
+       var context =  new AudioContext();
+       var node = context.createScriptProcessor(2048, 1, 1);
+       var source = context.createMediaElementSource(video);
+
+       //analyzer creation
+       var analyzer = context.createAnalyser();
+       analyzer.smoothingTimeConstant = 0.3;
+       analyzer.fftSize = 512;
+
+       //array for volume values
+       var bands = new Uint8Array(analyzer.frequencyBinCount);
+
+       //create audio source
+       source.connect(analyzer);
+       analyzer.connect(node);
+       node.connect(context.destination);
+       source.connect(context.destination);
+       var ctx = canvas.getContext('2d');
+
+       // listen for audio process
+       node.onaudioprocess = function () {
+           analyzer.getByteFrequencyData(bands);
+           setTimeout(draw(bands, ctx), 500);
+       }
+   }
    // draw diagram on the canvas
    function draw(data, ctx) {
        ctx.clearRect(0, 0, canvas.width, canvas.height);
        data.forEach(function (soundValue, i) {
            ctx.fillStyle = '#ff0000';
-           ctx.fillRect(i, canvas.height - soundValue / 4, i + 1, soundValue);
+           ctx.fillRect(i, canvas.height - soundValue / 4, i + 2, soundValue);
        });
    }
 

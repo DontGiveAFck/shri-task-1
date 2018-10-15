@@ -1,4 +1,5 @@
 (function () {
+    //get event list from the server
     window.onload = function () {
         xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
@@ -10,6 +11,7 @@
         xhr.send();
     }
 
+    //add events that come from the server
     function addEvents(eventsList) {
         var input = {};
         input.events = eventsList;
@@ -31,6 +33,7 @@
             'cam': 'images/cam-white.svg'
         }
 
+        // build template and append to the page
         input.events.forEach(function (event, index) {
             var eventContainer = document.importNode(template.content, true);
             eventContainer.querySelector('.icon').setAttribute('src', eventIcons[event.icon]);
