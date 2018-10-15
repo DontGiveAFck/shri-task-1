@@ -1,41 +1,55 @@
 (function () {
-    //get event list from the server
+    // get event list from the server
     window.onload = function () {
-        xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
                 return addEvents(JSON.parse(this.response));
             }
         };
         xhr.open('GET', `${document.location.protocol}//${document.location.host}/api/events${window.location.search}`);
         xhr.send();
+    };
+
+    function isTouchDevice() {
+        const prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+        const mq = function (query) {
+            return window.matchMedia(query).matches;
+        };
+
+        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+            return true;
+        }
+        const query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
+        return mq(query);
     }
 
-    //add events that come from the server
+    // add events that come from the server
     function addEvents(eventsList) {
-        var input = {};
+        const input = {};
         input.events = eventsList;
-        var isImageAdded = false;
-        var template = document.querySelector('.template');
-        var events = document.querySelector('.events');
-        var eventIcons = {
+        let isImageAdded = false;
+        let template;
+        template = document.querySelector('.template');
+        const events = document.querySelector('.events');
+        const eventIcons = {
             'ac-white': 'images/ac-white.svg',
-            'ac': 'images/ac-white.svg',
-            'battery': 'images/battery.svg',
-            'fridge': 'images/fridge.svg',
-            'kettle': 'images/kettle.svg',
-            'key': 'images/key.svg',
-            'music': 'images/music.svg',
+            ac: 'images/ac-white.svg',
+            battery: 'images/battery.svg',
+            fridge: 'images/fridge.svg',
+            kettle: 'images/kettle.svg',
+            key: 'images/key.svg',
+            music: 'images/music.svg',
             'robot-cleaner': 'images/robot-cleaner.svg',
-            'router': 'images/router.svg',
-            'stats': 'images/stats.svg',
-            'thermal': 'images/thermal.svg',
-            'cam': 'images/cam-white.svg'
-        }
+            router: 'images/router.svg',
+            stats: 'images/stats.svg',
+            thermal: 'images/thermal.svg',
+            cam: 'images/cam-white.svg',
+        };
 
         // build template and append to the page
-        input.events.forEach(function (event, index) {
-            var eventContainer = document.importNode(template.content, true);
+        input.events.forEach((event) => {
+            const eventContainer = document.importNode(template.content, true);
             eventContainer.querySelector('.icon').setAttribute('src', eventIcons[event.icon]);
             eventContainer.querySelector('.title').textContent = event.title;
             eventContainer.querySelector('.source').textContent = event.source;
@@ -55,23 +69,23 @@
                 if (event.data.humidity) {
                     eventContainer.querySelector('.humidity').textContent = 'Влажность:';
                     eventContainer.querySelector('.temp').textContent = 'Tемпература:';
-                    eventContainer.querySelector('.temp-value').textContent = event.data.temperature + ' C';
-                    eventContainer.querySelector('.humidity-value').textContent = event.data.humidity + ' %';
+                    eventContainer.querySelector('.temp-value').textContent = `${event.data.temperature} C`;
+                    eventContainer.querySelector('.humidity-value').textContent = `${event.data.humidity} %`;
                 } else {
                     eventContainer.querySelector('.data .temp-humidity-row').remove();
                 }
-                if (event.data.type == 'graph') {
+                if (event.data.type === 'graph') {
                     eventContainer.querySelector('.image').setAttribute('src', 'images/Richdata.png');
                 }
                 if (event.data.image) {
-                    var img = eventContainer.querySelector('.image');
+                    const img = eventContainer.querySelector('.image');
                     img.setAttribute('src', 'images/md.png');
                     img.setAttribute('srcset', 'images/sm.png 832w, images/lg.png 2496w');
                     img.setAttribute('sizes', '(max-width: 648px) 832px, (min-width: 1600) 2496px');
 
-                    if(isTouchDevice() && !isImageAdded) {
+                    if (isTouchDevice() && !isImageAdded) {
                         isImageAdded = true;
-                        var wrapper = eventContainer.querySelector('.image-wrapper');
+                        const wrapper = eventContainer.querySelector('.image-wrapper');
                         wrapper.style.backgroundImage = 'url("images/sm.png")';
                         wrapper.style.width = '100%';
                         img.style.visibility = 'hidden';
@@ -79,7 +93,7 @@
                         eventContainer.querySelector('.image-info').style.display = 'flex';
                     }
                 } else {
-                    if(event.data.type != 'graph'){
+                    if (event.data.type !== 'graph') {
                         eventContainer.querySelector('.image').remove();
                     }
                     eventContainer.querySelector('.image-wrapper').remove();
@@ -90,7 +104,7 @@
                     eventContainer.querySelector('.track-title').textContent = `${event.data.artist} - ${event.data.track.name}`;
                     eventContainer.querySelector('.track-length').textContent = event.data.track.length;
                     eventContainer.querySelector('.volume-range').value = event.data.volume;
-                    eventContainer.querySelector('.volume-percentage').textContent = event.data.volume + '%';
+                    eventContainer.querySelector('.volume-percentage').textContent = `${event.data.volume}%`;
                 } else {
                     eventContainer.querySelector('.music').remove();
                 }
@@ -98,20 +112,24 @@
                 eventContainer.querySelector('.data').remove();
             }
             events.appendChild(eventContainer);
-            switch(event.size) {
-                case 'l': {
-                    events.lastElementChild.classList.add('event-l');
-                    break;
-                }
-                case 's': {
-                    events.lastElementChild.classList.add('event-s');
-                    break;
-                }
-                case 'm': {
-                    events.lastElementChild.classList.add('event-m');
-                }
+            switch (event.size) {
+            case 'l': {
+                events.lastElementChild.classList.add('event-l');
+                break;
             }
-            if (event.type == 'critical') {
+            case 's': {
+                events.lastElementChild.classList.add('event-s');
+                break;
+            }
+            case 'm': {
+                events.lastElementChild.classList.add('event-m');
+                break;
+            }
+            default: {
+                console.warn('smth wrong in input file');
+            }
+            }
+            if (event.type === 'critical') {
                 events.lastElementChild.classList.add('event-critical');
                 events.lastElementChild.children[4].classList.add('event');
                 events.lastElementChild.querySelector('.arrow-cross').setAttribute('src', 'images/cross-white.svg');
@@ -119,29 +137,16 @@
         });
     }
 
-    function isTouchDevice() {
-        var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
-        var mq = function(query) {
-            return window.matchMedia(query).matches;
-        }
-
-        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-            return true;
-        }
-        var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
-        return mq(query);
-    }
-
     if (isTouchDevice()) {
-        var icons = document.body.querySelectorAll('.arrow-cross, .arrow-right');
-        icons.forEach(function (icon) {
+        const icons = document.body.querySelectorAll('.arrow-cross, .arrow-right');
+        icons.forEach((icon) => {
             icon.style.display = 'block';
         });
     }
 
-    document.body.querySelector('.icon-menu').addEventListener('click', function () {
+    document.body.querySelector('.icon-menu').addEventListener('click', () => {
         document.body.querySelector('nav ul').classList.toggle('menu-active');
         document.body.querySelector('.icon-menu').classList.toggle('icon-menu-open');
         document.body.querySelector('.icon-menu').classList.toggle('icon-menu-close');
     });
-})();
+}());
