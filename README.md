@@ -1,3 +1,8 @@
+TODO:
+1. Вылетает ошибка при повторном раскрытии видео - ailed to execute 'createMediaElementSource' on 'BaseAudioContext': HTMLMediaElement already connected previously to a different MediaElementSourceNode.
+2. Не получается убрать node.onaudioproccess, чтобы потом упешно вернуть при разворачивании видео.
+3. Анимация немного просаживает фпс
+
 #Запуск: <br>
 npm i <br>
 npm start <br>
