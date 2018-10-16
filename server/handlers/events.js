@@ -10,7 +10,6 @@ module.exports = {
         // for pagination
         const limit = req.query.limit || req.body.limit || Number.MAX_SAFE_INTEGER;
         const offset = req.query.offset || req.body.offset || 0;
-
         // if type specified
         const type = req.query.type || req.body.type;
         if (type) {
@@ -57,10 +56,9 @@ module.exports = {
         allEventsArray.forEach((event, i) => {
             if (i + 1 > offset && count < limit) {
                 res.push(event);
-                count += count;
+                count++;
             }
         });
-
         return res;
     },
 
