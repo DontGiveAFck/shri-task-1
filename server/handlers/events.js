@@ -14,7 +14,7 @@ module.exports = {
         // if type specified
         const type = req.query.type || req.body.type;
         if (type) {
-            const types = req.query.type.split(':');
+            const types = type.split(':');
             if (this._isTypesValid(types)) {
                 const result = [];
                 fs.readFile(__dirname.concat('/../files/events.json'), 'utf8', (err, data) => {
