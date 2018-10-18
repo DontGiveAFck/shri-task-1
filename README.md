@@ -1,5 +1,5 @@
 TODO:
-1. Вылетает ошибка при повторном раскрытии видео - ailed to execute 'createMediaElementSource' on 'BaseAudioContext': HTMLMediaElement already connected previously to a different MediaElementSourceNode.
+1. При повторном открытии видео анализатор звука подлагивает
 
 #Запуск: <br>
 npm i <br>
