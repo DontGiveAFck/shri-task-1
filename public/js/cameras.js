@@ -1,5 +1,4 @@
 (function () {
-
     const videos = document.body.querySelectorAll('.video');
 
     const bg = document.body.querySelector('.bg');
@@ -23,6 +22,7 @@
     const lightingLevel = document.querySelector('.lighting');
 
     let stopLighting;
+    let videoOpened = false;
 
     // check audio context
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -94,8 +94,10 @@
 
         // listen for audio process
         node.onaudioprocess = function () {
-            analyzer.getByteFrequencyData(bands);
-            setTimeout(draw(bands, ctx), 500);
+            if (videoOpened) {
+                analyzer.getByteFrequencyData(bands);
+                setTimeout(draw(bands, ctx), 400);
+            }
         };
     }
 
@@ -107,6 +109,7 @@
                 videoScreenFit(video);
                 analyzer(video);
                 stopLighting = setInterval(getLightingLevel.bind(null, video), 1000);
+                videoOpened = true;
             }
         });
     });
@@ -122,6 +125,7 @@
         canvas.classList.remove('sound-diagram-opened');
         document.body.classList.toggle('body-no-scroll');
         clearInterval(stopLighting);
+        videoOpened = false;
     });
 
     // add listeners for video controls

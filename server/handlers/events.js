@@ -3,6 +3,7 @@ const fs = require('fs');
 const error = {
     incorrectType: 'incorrect type',
 };
+
 const eventTypes = ['info', 'critical'];
 
 module.exports = {

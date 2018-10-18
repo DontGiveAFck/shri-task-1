@@ -1,12 +1,9 @@
 (function () {
     const wrapper = document.body.querySelector('.image-wrapper');
 
-
     const transVal = document.body.querySelector('.trans span');
 
-
     const zoomVal = document.body.querySelector('.zoom span');
-
 
     const brightVal = document.body.querySelector('.brightness span');
 

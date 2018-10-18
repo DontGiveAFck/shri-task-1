@@ -4,7 +4,8 @@
         "indent": ["error", 4],
         "no-underscore-dangle": ["error", { "allowAfterThis": true }],
         "no-param-reassign": [2, { "props": false }],
-        "quote-props": "off"
+        "quote-props": "off",
+        "no-plusplus": "off"
     },
     "env": {
         "browser": true,
