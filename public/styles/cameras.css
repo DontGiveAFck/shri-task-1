@@ -100,7 +100,7 @@ nav {
 }
 
 .controls-panel {
-    background-color: lightseagreen;
+    background-color: lightgrey;
     opacity: 0.9;
     z-index: 2;
     position: absolute;
@@ -131,7 +131,7 @@ nav {
 .video-fixed {
     position: fixed;
 }
-video:hover {
+.video:hover {
     box-shadow: 0 3px 10px blueviolet;
 }
 .video-opened {
@@ -192,10 +192,10 @@ video:hover {
     display: none;
     position: absolute;
     z-index: 2;
-    right: 0;
-    bottom: 0;
+    right: calc(50% - 160px);
+    bottom: 100%;
     opacity: 0.9;
-    width: 50%;
+    width: 320px;
     max-height: 64px;
 }
 .sound-diagram-opened {
@@ -278,9 +278,6 @@ video:hover {
 @media (max-width: 400px) {
     html {
         font-size: 10px;
-    }
-    .controls-panel {
-        height: 160px;
     }
 }
 

@@ -1,78 +1,28 @@
 (function () {
-    // init videos (copied from rep)
-    function initVideo(video, url) {
-        if (Hls.isSupported()) {
-            const hls = new Hls();
-            hls.loadSource(url);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                video.play();
-            });
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8';
-            video.addEventListener('loadedmetadata', () => {
-                video.play();
-            });
-        }
-    }
-
-    function getUrl(path) {
-        return encodeURIComponent(`${document.location.protocol}//${document.location.hostname}:${document.location.port}/streams/${path}/master.m3u8`);
-    }
-    initVideo(
-        document.getElementById('video-1'),
-        `http://localhost:9191/master?url=${getUrl('sosed')}`,
-    );
-
-    initVideo(
-        document.getElementById('video-2'),
-        `http://localhost:9191/master?url=${getUrl('cat')}`,
-    );
-
-    initVideo(
-        document.getElementById('video-3'),
-        `http://localhost:9191/master?url=${getUrl('dog')}`,
-    );
-
-    initVideo(
-        document.getElementById('video-4'),
-        `http://localhost:9191/master?url=${getUrl('hall')}`,
-    );
 
     const videos = document.body.querySelectorAll('.video');
 
-
     const bg = document.body.querySelector('.bg');
-
 
     const btnAllCameras = document.querySelector('.btn-all-cameras');
 
-
     const brightnessRange = document.querySelector('.brightness input');
-
 
     const contrastRange = document.querySelector('.contrast input');
 
-
     const brightnessLabel = document.querySelector('.brightness span');
-
 
     const contrastLabel = document.querySelector('.contrast span');
 
-
-    const volumeRange = document.querySelector('.volume input');
-
-
-    const volumeLabel = document.querySelector('.volume span');
-
-
     const controlsPanel = document.querySelector('.controls-panel');
-
 
     const canvas = document.querySelector('.sound-diagram');
 
-
     const btnAnalyzator = document.querySelector('.btn-analyzator');
+
+    const lightingLevel = document.querySelector('.lighting');
+
+    let stopLighting;
 
     // check audio context
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -80,6 +30,7 @@
     } else {
         alert('Браузер не поддерживает Web Audio API!');
     }
+
 
     // full screen video
     function videoScreenFit(video) {
@@ -95,11 +46,31 @@
     function draw(data, ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         data.forEach((soundValue, i) => {
-            ctx.fillStyle = '#ff0000';
-            ctx.fillRect(i, canvas.height - soundValue / 4, i + 2, soundValue);
+            ctx.fillStyle = `rgb(${soundValue + i / data.length}, ${(i / data.length)}, ${100})`;
+            ctx.fillRect(
+                ((i * canvas.width) / data.length) * 2,
+                canvas.height - soundValue / 4,
+                (canvas.width / data.length) * 2,
+                soundValue,
+            );
         });
     }
 
+    function getLightingLevel(video) {
+        const lightningCanvas = document.createElement('canvas');
+        const ctx = lightningCanvas.getContext('2d');
+
+        lightningCanvas.width = 1;
+        lightningCanvas.height = 1;
+
+        ctx.drawImage(video, 0, 0, 1, 1);
+        const imageData = ctx.getImageData(0, 0, 1, 1).data;
+        const grayScale = (imageData[0] + imageData[1] + imageData[2]) / 3;
+        const percentage = parseInt((grayScale * 100) / 255, 10);
+        lightingLevel.innerText = `Освещенность: ${percentage}%`;
+    }
+
+    // video
     function analyzer(video) {
         // context creation
         const context = new AudioContext();
@@ -128,8 +99,6 @@
         };
     }
 
-
-
     // add event listener for each video
     videos.forEach((video) => {
         video.addEventListener('click', () => {
@@ -137,10 +106,10 @@
                 video.muted = false;
                 videoScreenFit(video);
                 analyzer(video);
+                stopLighting = setInterval(getLightingLevel.bind(null, video), 1000);
             }
         });
     });
-
 
     // close opened video
     btnAllCameras.addEventListener('click', () => {
@@ -152,26 +121,24 @@
         controlsPanel.classList.remove('controls-panel-opened');
         canvas.classList.remove('sound-diagram-opened');
         document.body.classList.toggle('body-no-scroll');
+        clearInterval(stopLighting);
     });
-
-
 
     // add listeners for video controls
     brightnessRange.addEventListener('input', function () {
         brightnessLabel.innerText = this.value;
-        document.body.querySelector('.video-opened').style.filter = `brightness(${this.value}%)`;
+        document.body.querySelector('.video-opened').style.filter = `brightness(${
+            this.value
+        }%)`;
     });
 
     contrastRange.addEventListener('input', function () {
         contrastLabel.innerText = this.value;
-        document.body.querySelector('.video-opened').style.filter = `contrast(${this.value}%)`;
+        document.body.querySelector('.video-opened').style.filter = `contrast(${
+            this.value
+        }%)`;
     });
 
-    volumeRange.addEventListener('input', function () {
-        const opened = document.body.querySelector('.video-opened');
-        opened.volume = this.value / 100;
-        volumeLabel.innerText = this.value;
-    });
 
     // show analyzer
     btnAnalyzator.addEventListener('click', () => {
@@ -182,7 +149,11 @@
     document.body.querySelector('.icon-menu').addEventListener('click', () => {
         document.body.querySelector('.menu').classList.toggle('menu-active');
         console.log(document.body.querySelector('.menu'));
-        document.body.querySelector('.icon-menu').classList.toggle('icon-menu-open');
-        document.body.querySelector('.icon-menu').classList.toggle('icon-menu-close');
+        document.body
+            .querySelector('.icon-menu')
+            .classList.toggle('icon-menu-open');
+        document.body
+            .querySelector('.icon-menu')
+            .classList.toggle('icon-menu-close');
     });
 }());

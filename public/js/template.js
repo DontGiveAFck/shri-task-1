@@ -34,17 +34,17 @@
         const events = document.querySelector('.events');
         const eventIcons = {
             'ac-white': 'images/ac-white.svg',
-            ac: 'images/ac-white.svg',
-            battery: 'images/battery.svg',
-            fridge: 'images/fridge.svg',
-            kettle: 'images/kettle.svg',
-            key: 'images/key.svg',
-            music: 'images/music.svg',
+            'ac': 'images/ac-white.svg',
+            'battery': 'images/battery.svg',
+            'fridge': 'images/fridge.svg',
+            'kettle': 'images/kettle.svg',
+            'key': 'images/key.svg',
+            'music': 'images/music.svg',
             'robot-cleaner': 'images/robot-cleaner.svg',
-            router: 'images/router.svg',
-            stats: 'images/stats.svg',
-            thermal: 'images/thermal.svg',
-            cam: 'images/cam-white.svg',
+            'router': 'images/router.svg',
+            'stats': 'images/stats.svg',
+            'thermal': 'images/thermal.svg',
+            'cam': 'images/cam-white.svg',
         };
 
         // build template and append to the page
