@@ -15,7 +15,7 @@
 
     const controlsPanel = document.querySelector('.controls-panel');
 
-    const canvas = document.querySelector('.sound-diagram');
+    const canvases = document.querySelectorAll('.sound-diagram');
 
     const btnAnalyzator = document.querySelector('.btn-analyzator');
 
@@ -25,10 +25,12 @@
 
     const sourceInstances = [];
 
-    let mediaElementSource;
+    const analyzeInstances = [];
 
+    let mediaElementSource;
     let stopLighting;
     let videoOpened = false;
+    let openedCanvas = 0;
 
     // check audio context
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -52,13 +54,13 @@
 
     // draw diagram on the canvas
     function draw(data, ctx) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvases[openedCanvas].width, canvases[openedCanvas].height);
         data.forEach((soundValue, i) => {
             ctx.fillStyle = `rgb(${soundValue + i / data.length}, ${(i / data.length)}, ${100})`;
             ctx.fillRect(
-                ((i * canvas.width) / data.length) * 2,
-                canvas.height - soundValue / 4,
-                (canvas.width / data.length) * 2,
+                ((i * canvases[openedCanvas].width) / data.length) * 2,
+                canvases[openedCanvas].height - soundValue / 4,
+                (canvases[openedCanvas].width / data.length) * 2,
                 soundValue,
             );
         });
@@ -81,7 +83,6 @@
     // video
     function analyzer(video) {
         // context creation
-
         const node = context.createScriptProcessor(2048, 1, 1);
         if (!sourceFlags.includes(video)) {
             mediaElementSource = context.createMediaElementSource(video);
@@ -104,7 +105,7 @@
         analyzer.connect(node);
         node.connect(context.destination);
         mediaElementSource.connect(context.destination);
-        const ctx = canvas.getContext('2d');
+        const ctx = canvases[[openedCanvas]].getContext('2d');
 
         // listen for audio process
         node.onaudioprocess = function () {
@@ -116,12 +117,16 @@
     }
 
     // add event listener for each video
-    videos.forEach((video) => {
+    videos.forEach((video, i) => {
         video.addEventListener('click', () => {
             if (!video.classList.contains('video-opened')) {
                 video.muted = false;
                 videoScreenFit(video);
-                analyzer(video);
+                openedCanvas = i;
+                if (!analyzeInstances.includes(video)) {
+                    analyzer(video);
+                    analyzeInstances.push(video);
+                }
                 stopLighting = setInterval(getLightingLevel.bind(null, video), 1000);
                 videoOpened = true;
             }
@@ -136,7 +141,7 @@
         opened.style.transform = 'unset';
         bg.classList.toggle('bg-opened');
         controlsPanel.classList.remove('controls-panel-opened');
-        canvas.classList.remove('sound-diagram-opened');
+        canvases[openedCanvas].classList.remove('sound-diagram-opened');
         document.body.classList.toggle('body-no-scroll');
         clearInterval(stopLighting);
         videoOpened = false;
@@ -160,7 +165,7 @@
 
     // show analyzer
     btnAnalyzator.addEventListener('click', () => {
-        canvas.classList.toggle('sound-diagram-opened');
+        canvases[openedCanvas].classList.toggle('sound-diagram-opened');
     });
 
     // hamburger menu
