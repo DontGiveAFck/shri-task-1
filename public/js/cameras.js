@@ -110,7 +110,7 @@
         node.onaudioprocess = function () {
             if (videoOpened) {
                 analyzer.getByteFrequencyData(bands);
-                setTimeout(draw(bands, ctx), 50);
+                setTimeout(draw(bands, ctx), 400);
             }
         };
     }
