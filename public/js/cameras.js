@@ -21,6 +21,12 @@
 
     const lightingLevel = document.querySelector('.lighting');
 
+    const sourceFlags = [];
+
+    const sourceInstances = [];
+
+    let mediaElementSource;
+
     let stopLighting;
     let videoOpened = false;
 
@@ -30,6 +36,8 @@
     } else {
         alert('Браузер не поддерживает Web Audio API!');
     }
+
+    const context = new AudioContext();
 
 
     // full screen video
@@ -73,9 +81,15 @@
     // video
     function analyzer(video) {
         // context creation
-        const context = new AudioContext();
+
         const node = context.createScriptProcessor(2048, 1, 1);
-        const source = context.createMediaElementSource(video);
+        if (!sourceFlags.includes(video)) {
+            mediaElementSource = context.createMediaElementSource(video);
+            sourceFlags.push(video);
+            sourceInstances[video] = mediaElementSource;
+        } else {
+            mediaElementSource = sourceInstances[video];
+        }
 
         // analyzer creation
         const analyzer = context.createAnalyser();
@@ -86,17 +100,17 @@
         const bands = new Uint8Array(analyzer.frequencyBinCount);
 
         // create audio source
-        source.connect(analyzer);
+        mediaElementSource.connect(analyzer);
         analyzer.connect(node);
         node.connect(context.destination);
-        source.connect(context.destination);
+        mediaElementSource.connect(context.destination);
         const ctx = canvas.getContext('2d');
 
         // listen for audio process
         node.onaudioprocess = function () {
             if (videoOpened) {
                 analyzer.getByteFrequencyData(bands);
-                setTimeout(draw(bands, ctx), 400);
+                setTimeout(draw(bands, ctx), 50);
             }
         };
     }
