@@ -2,7 +2,7 @@
     const wrapper = document.body.querySelector('.image-wrapper');
 
     const transVal = document.body.querySelector('.trans span');
-
+    console.log(transVal);
     const zoomVal = document.body.querySelector('.zoom span');
 
     const brightVal = document.body.querySelector('.brightness span');
@@ -41,13 +41,14 @@
         const minBright = 0.2;
         const maxBright = 2;
         bright = bright < minBright ? minBright : (bright > maxBright ? maxBright : bright);
+
         wrapper.style.filter = `brightness(${bright})`;
         brightVal.innerText = `${parseInt(bright * 100, 10)}%`;
     }
-
-    if (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0 || navigator.maxTouchPoints > 0)) {
+    console.log('wrapper', wrapper);
+    if (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0 || navigator.maxTouchPoints > 0 || true)) {
         let pointers = [];
-
+        console.log('wrapper', wrapper);
         wrapper.addEventListener('pointerdown', (event) => {
             wrapper.setPointerCapture(event.pointerId);
             pointers.push(event);

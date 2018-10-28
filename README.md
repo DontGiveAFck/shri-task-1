@@ -7,7 +7,7 @@ npm start <br>
 
 В директории public/ - клиентские файлы <br>
 В директории server/ - серверные <br>
-В корневой директории server.js <br>
+В корневой директории server.ts <br>
 
 ##**Задание 3**
 перейти на http://localhost:8000/cameras.html
