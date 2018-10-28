@@ -5,7 +5,6 @@ declare const Hls: any;
 function initVideo(video: HTMLVideoElement, url: string) {
     if (Hls.isSupported()) {
         const hls = new Hls();
-        console.log(hls);
         hls.loadSource(url);
         hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED, () => {

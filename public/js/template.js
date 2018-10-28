@@ -1,381 +1,512 @@
-(function () {
-
-        let events = [
-        {
-            "type": "info",
-            "title": "Еженедельный отчет по расходам ресурсов",
-            "source": "Сенсоры потребления",
-            "time": "19:00, Сегодня",
-            "description": "Так держать! За последнюю неделю вы потратили на 10% меньше ресурсов, чем неделей ранее.",
-            "icon": "stats",
-            "data": {
-                "type": "graph",
-                "values": [
-                    {
-                        "electricity": [
-                            [
-                                "1536883200",
-                                115
-                            ],
-                            [
-                                "1536969600",
-                                117
-                            ],
-                            [
-                                "1537056000",
-                                117.2
-                            ],
-                            [
-                                "1537142400",
-                                118
-                            ],
-                            [
-                                "1537228800",
-                                120
-                            ],
-                            [
-                                "1537315200",
-                                123
-                            ],
-                            [
-                                "1537401600",
-                                129
-                            ]
-                        ]
-                    },
-                    {
-                        "water": [
-                            [
-                                "1536883200",
-                                40
-                            ],
-                            [
-                                "1536969600",
-                                40.2
-                            ],
-                            [
-                                "1537056000",
-                                40.5
-                            ],
-                            [
-                                "1537142400",
-                                41
-                            ],
-                            [
-                                "1537228800",
-                                41.4
-                            ],
-                            [
-                                "1537315200",
-                                41.9
-                            ],
-                            [
-                                "1537401600",
-                                42.6
-                            ]
-                        ]
-                    },
-                    {
-                        "gas": [
-                            [
-                                "1536883200",
-                                13
-                            ],
-                            [
-                                "1536969600",
-                                13.2
-                            ],
-                            [
-                                "1537056000",
-                                13.5
-                            ],
-                            [
-                                "1537142400",
-                                13.7
-                            ],
-                            [
-                                "1537228800",
-                                14
-                            ],
-                            [
-                                "1537315200",
-                                14.2
-                            ],
-                            [
-                                "1537401600",
-                                14.5
-                            ]
-                        ]
-                    }
-                ]
-            },
-            "size": "l"
-        },
-        {
-            "type": "info",
-            "title": "Дверь открыта",
-            "source": "Сенсор входной двери",
-            "time": "18:50, Сегодня",
-            "description": null,
-            "icon": "key",
-            "size": "s"
-        },
-        {
-            "type": "info",
-            "title": "Уборка закончена",
-            "source": "Пылесос",
-            "time": "18:45, Сегодня",
-            "description": null,
-            "icon": "robot-cleaner",
-            "size": "s"
-        },
-        {
-            "type": "info",
-            "title": "Новый пользователь",
-            "source": "Роутер",
-            "time": "18:45, Сегодня",
-            "description": null,
-            "icon": "router",
-            "size": "s"
-        },
-        {
-            "type": "info",
-            "title": "Изменен климатический режим",
-            "source": "Сенсор микроклимата",
-            "time": "18:30, Сегодня",
-            "description": "Установлен климатический режим «Фиджи»",
-            "icon": "thermal",
-            "size": "m",
-            "data": {
-                "temperature": 24,
-                "humidity": 80
-            }
-        },
-        {
-            "type": "critical",
-            "title": "Невозможно включить кондиционер",
-            "source": "Кондиционер",
-            "time": "18:21, Сегодня",
-            "description": "В комнате открыто окно, закройте его и повторите попытку",
-            "icon": "ac",
-            "size": "m"
-        },
-        {
-            "type": "info",
-            "title": "Музыка включена",
-            "source": "Яндекс.Станция",
-            "time": "18:16, Сегодня",
-            "description": "Сейчас проигрывается:",
-            "icon": "music",
-            "size": "m",
-            "data": {
-                "albumcover": "https://avatars.yandex.net/get-music-content/193823/1820a43e.a.5517056-1/m1000x1000",
-                "artist": "Florence & The Machine",
-                "track": {
-                    "name": "Big God",
-                    "length": "4:31"
-                },
-                "volume": 80
-            }
-        },
-        {
-            "type": "info",
-            "title": "Заканчивается молоко",
-            "source": "Холодильник",
-            "time": "17:23, Сегодня",
-            "description": "Кажется, в холодильнике заканчивается молоко. Вы хотите добавить его в список покупок?",
-            "icon": "fridge",
-            "size": "m",
-            "data": {
-                "buttons": [
-                    "Да",
-                    "Нет"
-                ]
-            }
-        },
-        {
-            "type": "info",
-            "title": "Зарядка завершена",
-            "source": "Оконный сенсор",
-            "time": "16:22, Сегодня",
-            "description": "Ура! Устройство «Оконный сенсор» снова в строю!",
-            "icon": "battery",
-            "size": "s"
-        },
-        {
-            "type": "critical",
-            "title": "Пылесос застрял",
-            "source": "Сенсор движения",
-            "time": "16:17, Сегодня",
-            "description": "Робопылесос не смог сменить свое местоположение в течение последних 3 минут. Похоже, ему нужна помощь.",
-            "icon": "cam",
-            "data": {
-                "image": "get_it_from_mocks_:3.jpg"
-            },
-            "size": "l"
-        },
-        {
-            "type": "info",
-            "title": "Вода вскипела",
-            "source": "Чайник",
-            "time": "16:20, Сегодня",
-            "description": null,
-            "icon": "kettle",
-            "size": "s"
-        }
-    ]
+"use strict";
+(() => {
     // get event list from the server
     /*
-    window.onload = function () {
+    window.onload = () => {
         const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                return addEvents(JSON.parse(this.response));
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                return addEvents(JSON.parse(xhr.response));
             }
         };
-        xhr.open('GET', `${document.location.protocol}//${document.location.host}/api/events${window.location.search}`);
+        if (document.location) {
+            xhr.open(
+                "GET",
+                `${document.location.protocol}//${document.location.host}/api/events${window.location.search}`,
+            );
+        }
         xhr.send();
     };
     */
-
+    const list = [
+        {
+            type: "info",
+            title: "Еженедельный отчет по расходам ресурсов",
+            source: "Сенсоры потребления",
+            time: "19:00, Сегодня",
+            description: "Так держать! За последнюю неделю вы потратили на 10% меньше ресурсов, чем неделей ранее.",
+            icon: "stats",
+            data: {
+                type: "graph",
+                values: [
+                    {
+                        electricity: [
+                            [
+                                "1536883200",
+                                115,
+                            ],
+                            [
+                                "1536969600",
+                                117,
+                            ],
+                            [
+                                "1537056000",
+                                117.2,
+                            ],
+                            [
+                                "1537142400",
+                                118,
+                            ],
+                            [
+                                "1537228800",
+                                120,
+                            ],
+                            [
+                                "1537315200",
+                                123,
+                            ],
+                            [
+                                "1537401600",
+                                129,
+                            ],
+                        ],
+                    },
+                    {
+                        water: [
+                            [
+                                "1536883200",
+                                40,
+                            ],
+                            [
+                                "1536969600",
+                                40.2,
+                            ],
+                            [
+                                "1537056000",
+                                40.5,
+                            ],
+                            [
+                                "1537142400",
+                                41,
+                            ],
+                            [
+                                "1537228800",
+                                41.4,
+                            ],
+                            [
+                                "1537315200",
+                                41.9,
+                            ],
+                            [
+                                "1537401600",
+                                42.6,
+                            ],
+                        ],
+                    },
+                    {
+                        gas: [
+                            [
+                                "1536883200",
+                                13,
+                            ],
+                            [
+                                "1536969600",
+                                13.2,
+                            ],
+                            [
+                                "1537056000",
+                                13.5,
+                            ],
+                            [
+                                "1537142400",
+                                13.7,
+                            ],
+                            [
+                                "1537228800",
+                                14,
+                            ],
+                            [
+                                "1537315200",
+                                14.2,
+                            ],
+                            [
+                                "1537401600",
+                                14.5,
+                            ],
+                        ],
+                    },
+                ],
+            },
+            size: "l",
+        },
+        {
+            type: "info",
+            title: "Дверь открыта",
+            source: "Сенсор входной двери",
+            time: "18:50, Сегодня",
+            description: null,
+            icon: "key",
+            size: "s",
+        },
+        {
+            type: "info",
+            title: "Уборка закончена",
+            source: "Пылесос",
+            time: "18:45, Сегодня",
+            description: null,
+            icon: "robot-cleaner",
+            size: "s",
+        },
+        {
+            type: "info",
+            title: "Новый пользователь",
+            source: "Роутер",
+            time: "18:45, Сегодня",
+            description: null,
+            icon: "router",
+            size: "s",
+        },
+        {
+            type: "info",
+            title: "Изменен климатический режим",
+            source: "Сенсор микроклимата",
+            time: "18:30, Сегодня",
+            description: "Установлен климатический режим «Фиджи»",
+            icon: "thermal",
+            size: "m",
+            data: {
+                temperature: "24",
+                humidity: "80",
+            },
+        },
+        {
+            type: "critical",
+            title: "Невозможно включить кондиционер",
+            source: "Кондиционер",
+            time: "18:21, Сегодня",
+            description: "В комнате открыто окно, закройте его и повторите попытку",
+            icon: "ac",
+            size: "m",
+        },
+        {
+            type: "info",
+            title: "Музыка включена",
+            source: "Яндекс.Станция",
+            time: "18:16, Сегодня",
+            description: "Сейчас проигрывается:",
+            icon: "music",
+            size: "m",
+            data: {
+                albumcover: "https://avatars.yandex.net/get-music-content/193823/1820a43e.a.5517056-1/m1000x1000",
+                artist: "Florence & The Machine",
+                track: {
+                    name: "Big God",
+                    length: "4:31",
+                },
+                volume: "80",
+            },
+        },
+        {
+            type: "info",
+            title: "Заканчивается молоко",
+            source: "Холодильник",
+            time: "17:23, Сегодня",
+            description: "Кажется, в холодильнике заканчивается молоко. Вы хотите добавить его в список покупок?",
+            icon: "fridge",
+            size: "m",
+            data: {
+                buttons: [
+                    "Да",
+                    "Нет",
+                ],
+            },
+        },
+        {
+            type: "info",
+            title: "Зарядка завершена",
+            source: "Оконный сенсор",
+            time: "16:22, Сегодня",
+            description: "Ура! Устройство «Оконный сенсор» снова в строю!",
+            icon: "battery",
+            size: "s",
+        },
+        {
+            type: "critical",
+            title: "Пылесос застрял",
+            source: "Сенсор движения",
+            time: "16:17, Сегодня",
+            description: "Робопылесос не смог сменить свое местоположение в течение последних 3 минут. Похоже, ему нужна помощь.",
+            icon: "cam",
+            data: {
+                image: "get_it_from_mocks_:3.jpg",
+            },
+            size: "l",
+        },
+        {
+            type: "info",
+            title: "Вода вскипела",
+            source: "Чайник",
+            time: "16:20, Сегодня",
+            description: null,
+            icon: "kettle",
+            size: "s",
+        },
+    ];
+    // check, if device has a touch screen
     function isTouchDevice() {
-        const prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
-        const mq = function (query) {
-            return window.matchMedia(query).matches;
+        const prefixes = " -webkit- -moz- -o- -ms- ".split(" ");
+        const mq = (queryCheck) => {
+            return window.matchMedia(queryCheck).matches;
         };
-
-        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+        if (("ontouchstart" in window)) {
             return true;
         }
-        const query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
+        const query = ["(", prefixes.join("touch-enabled),("), "heartz", ")"].join("");
         return mq(query);
     }
-
-    addEvents(events)
-
+    addEvents(list);
     // add events that come from the server
     function addEvents(eventsList) {
-        const input = {};
+        const input = {
+            events: [],
+        };
         input.events = eventsList;
         let isImageAdded = false;
-        let template;
-        template = document.querySelector('.template');
-        const events = document.querySelector('.events');
+        const template = document.querySelector(".template");
+        const events = document.querySelector(".events");
+        // events properties
+        let eventContainer;
+        let icon;
+        let title;
+        let source;
+        let time;
+        let description;
+        let btnNegative;
+        let btnPositive;
+        let btnsRow;
+        let humidity;
+        let temp;
+        let tempValue;
+        let humidityValue;
+        let tempHumidityRow;
+        let image;
+        let imageInfo;
+        let imageWrapper;
+        let trackIcon;
+        let trackLength;
+        let volumeRange;
+        let volumePercentage;
+        let music;
+        let data;
+        let trackTitle;
+        if (template) {
+        }
         const eventIcons = {
-            'ac-white': 'images/ac-white.svg',
-            'ac': 'images/ac-white.svg',
-            'battery': 'images/battery.svg',
-            'fridge': 'images/fridge.svg',
-            'kettle': 'images/kettle.svg',
-            'key': 'images/key.svg',
-            'music': 'images/music.svg',
-            'robot-cleaner': 'images/robot-cleaner.svg',
-            'router': 'images/router.svg',
-            'stats': 'images/stats.svg',
-            'thermal': 'images/thermal.svg',
-            'cam': 'images/cam-white.svg',
+            "ac": "images/ac-white.svg",
+            "ac-white": "images/ac-white.svg",
+            "battery": "images/battery.svg",
+            "cam": "images/cam-white.svg",
+            "fridge": "images/fridge.svg",
+            "kettle": "images/kettle.svg",
+            "key": "images/key.svg",
+            "music": "images/music.svg",
+            "robot-cleaner": "images/robot-cleaner.svg",
+            "router": "images/router.svg",
+            "stats": "images/stats.svg",
+            "thermal": "images/thermal.svg",
         };
-
         // build template and append to the page
-        input.events.forEach((event) => {
-            const eventContainer = document.importNode(template.content, true);
-            eventContainer.querySelector('.icon').setAttribute('src', eventIcons[event.icon]);
-            eventContainer.querySelector('.title').textContent = event.title;
-            eventContainer.querySelector('.source').textContent = event.source;
-            eventContainer.querySelector('.time').textContent = event.time;
-            if (event.description) {
-                eventContainer.querySelector('.description').textContent = event.description;
-            } else {
-                eventContainer.querySelector('.description').remove();
-            }
-            if (event.data) {
-                if (event.data.buttons) {
-                    eventContainer.querySelector('.data .btn-positive').textContent = event.data.buttons[0];
-                    eventContainer.querySelector('.data .btn-negative').textContent = event.data.buttons[1];
-                } else {
-                    eventContainer.querySelector('.data .buttons-row').remove();
-                }
-                if (event.data.humidity) {
-                    eventContainer.querySelector('.humidity').textContent = 'Влажность:';
-                    eventContainer.querySelector('.temp').textContent = 'Tемпература:';
-                    eventContainer.querySelector('.temp-value').textContent = `${event.data.temperature} C`;
-                    eventContainer.querySelector('.humidity-value').textContent = `${event.data.humidity} %`;
-                } else {
-                    eventContainer.querySelector('.data .temp-humidity-row').remove();
-                }
-                if (event.data.type === 'graph') {
-                    eventContainer.querySelector('.image').setAttribute('src', 'images/Richdata.png');
-                }
-                if (event.data.image) {
-                    const img = eventContainer.querySelector('.image');
-                    img.setAttribute('src', 'images/md.png');
-                    img.setAttribute('srcset', 'images/sm.png 832w, images/lg.png 2496w');
-                    img.setAttribute('sizes', '(max-width: 648px) 832px, (min-width: 1600) 2496px');
-
-                    if (isTouchDevice() && !isImageAdded) {
-                        isImageAdded = true;
-                        const wrapper = eventContainer.querySelector('.image-wrapper');
-                        wrapper.style.backgroundImage = 'url("images/sm.png")';
-                        wrapper.style.width = '100%';
-                        img.style.visibility = 'hidden';
-                        img.style.pointerEvents = 'none';
-                        eventContainer.querySelector('.image-info').style.display = 'flex';
+        const eventiki = input.events;
+        eventiki.forEach((event) => {
+            if (template) {
+                eventContainer = document.importNode(template.content, true);
+                icon = eventContainer.querySelector(".icon");
+                title = eventContainer.querySelector(".title");
+                source = eventContainer.querySelector(".source");
+                time = eventContainer.querySelector(".time");
+                description = eventContainer.querySelector(".description");
+                btnNegative = eventContainer.querySelector(".data .btn-negative");
+                btnPositive = eventContainer.querySelector(".data .btn-positive");
+                btnsRow = eventContainer.querySelector(".buttons-row");
+                humidity = eventContainer.querySelector(".humidity");
+                temp = eventContainer.querySelector(".temp");
+                tempValue = eventContainer.querySelector(".temp-value");
+                humidityValue = eventContainer.querySelector(".humidity-value");
+                tempHumidityRow = eventContainer.querySelector(".data .temp-humidity-row");
+                image = eventContainer.querySelector(".data .image");
+                imageInfo = eventContainer.querySelector(".image-info");
+                imageWrapper = eventContainer.querySelector(".image-wrapper");
+                trackIcon = eventContainer.querySelector(".track-icon");
+                trackLength = eventContainer.querySelector(".track-length");
+                volumeRange = eventContainer.querySelector(".volume-range");
+                volumePercentage = eventContainer.querySelector("volume-percentage");
+                music = eventContainer.querySelector(".music");
+                data = eventContainer.querySelector(".data");
+                trackTitle = eventContainer.querySelector(".track-title");
+                if (eventContainer) {
+                    const eventIcon = event.icon;
+                    if (icon && event.icon) {
+                        icon.setAttribute("src", eventIcons[eventIcon]);
                     }
-                } else {
-                    if (event.data.type !== 'graph') {
-                        eventContainer.querySelector('.image').remove();
+                    if (title) {
+                        title.textContent = event.title;
                     }
-                    eventContainer.querySelector('.image-wrapper').remove();
-                    eventContainer.querySelector('.image-info').remove();
+                    if (source) {
+                        source.textContent = event.source;
+                    }
+                    if (time) {
+                        time.textContent = event.time;
+                    }
+                    if (description) {
+                        if (event.description) {
+                            description.textContent = event.description;
+                        }
+                        else {
+                            description.remove();
+                        }
+                    }
+                    if (event.data) {
+                        if (event.data.buttons) {
+                            if (btnPositive) {
+                                btnPositive.textContent = event.data.buttons[0];
+                            }
+                            if (btnNegative) {
+                                btnNegative.textContent = event.data.buttons[1];
+                            }
+                        }
+                        else {
+                            if (btnsRow) {
+                                btnsRow.remove();
+                            }
+                        }
+                        if (event.data.humidity) {
+                            if (humidity) {
+                                humidity.textContent = "Влажность:";
+                            }
+                            if (temp) {
+                                temp.textContent = "Tемпература:";
+                            }
+                            if (tempValue) {
+                                tempValue.textContent = `${event.data.temperature} C`;
+                            }
+                            if (humidityValue) {
+                                humidityValue.textContent = `${event.data.humidity} %`;
+                            }
+                        }
+                        else {
+                            if (tempHumidityRow) {
+                                tempHumidityRow.remove();
+                            }
+                        }
+                        if (event.data.type === "graph") {
+                            if (image) {
+                                image.setAttribute("src", "images/Richdata.png");
+                            }
+                        }
+                        if (event.data.image) {
+                            if (image) {
+                                image.setAttribute("src", "images/md.png");
+                                image.setAttribute("srcset", "images/sm.png 832w, images/lg.png 2496w");
+                                image.setAttribute("sizes", "(max-width: 648px) 832px, (min-width: 1600) 2496px");
+                            }
+                            if (isTouchDevice() && !isImageAdded) {
+                                isImageAdded = true;
+                                let wrapper;
+                                wrapper = eventContainer.querySelector(".image-wrapper");
+                                if (wrapper) {
+                                    wrapper.style.backgroundImage = 'url("images/sm.png")';
+                                    wrapper.style.width = "100%";
+                                }
+                                if (image) {
+                                    image.style.visibility = "hidden";
+                                    image.style.pointerEvents = "none";
+                                }
+                                if (imageInfo) {
+                                    imageInfo.style.display = "flex";
+                                }
+                            }
+                        }
+                        else {
+                            if (event.data.type !== "graph") {
+                                if (image) {
+                                    image.remove();
+                                }
+                            }
+                            if (imageWrapper) {
+                                imageWrapper.remove();
+                            }
+                            if (imageInfo) {
+                                imageInfo.remove();
+                            }
+                        }
+                        if (event.data.track) {
+                            if (trackIcon && event.data.albumcover) {
+                                trackIcon.setAttribute("src", event.data.albumcover);
+                            }
+                            if (trackTitle) {
+                                trackTitle.textContent = `${event.data.artist} - ${event.data.track.name}`;
+                            }
+                            if (trackLength && event.data.track.length) {
+                                trackLength.textContent = event.data.track.length;
+                            }
+                            if (volumeRange && event.data.volume) {
+                                volumeRange.value = event.data.volume.toString();
+                            }
+                            if (volumePercentage && event.data.volume) {
+                                volumePercentage.textContent = `${event.data.volume}%`;
+                            }
+                        }
+                        else {
+                            if (music) {
+                                music.remove();
+                            }
+                        }
+                    }
+                    else {
+                        if (data) {
+                            data.remove();
+                        }
+                    }
+                    if (events) {
+                        events.appendChild(eventContainer);
+                        if (events.lastElementChild) {
+                            switch (event.size) {
+                                case "l": {
+                                    events.lastElementChild.classList.add("event-l");
+                                    break;
+                                }
+                                case "s": {
+                                    events.lastElementChild.classList.add("event-s");
+                                    break;
+                                }
+                                case "m": {
+                                    events.lastElementChild.classList.add("event-m");
+                                    break;
+                                }
+                                default: {
+                                    console.warn("smth wrong in input file");
+                                }
+                            }
+                            if (event.type === "critical") {
+                                events.lastElementChild.classList.add("event-critical");
+                                events.lastElementChild.children[4].classList.add("event");
+                                const arrowCross = events.lastElementChild
+                                    .querySelector(".arrow-cross");
+                                if (arrowCross) {
+                                    arrowCross.setAttribute("src", "images/cross-white.svg");
+                                }
+                            }
+                        }
+                    }
                 }
-                if (event.data.track) {
-                    eventContainer.querySelector('.track-icon').setAttribute('src', event.data.albumcover);
-                    eventContainer.querySelector('.track-title').textContent = `${event.data.artist} - ${event.data.track.name}`;
-                    eventContainer.querySelector('.track-length').textContent = event.data.track.length;
-                    eventContainer.querySelector('.volume-range').value = event.data.volume;
-                    eventContainer.querySelector('.volume-percentage').textContent = `${event.data.volume}%`;
-                } else {
-                    eventContainer.querySelector('.music').remove();
-                }
-            } else {
-                eventContainer.querySelector('.data').remove();
-            }
-            events.appendChild(eventContainer);
-            switch (event.size) {
-                case 'l': {
-                    events.lastElementChild.classList.add('event-l');
-                    break;
-                }
-                case 's': {
-                    events.lastElementChild.classList.add('event-s');
-                    break;
-                }
-                case 'm': {
-                    events.lastElementChild.classList.add('event-m');
-                    break;
-                }
-                default: {
-                    console.warn('smth wrong in input file');
-                }
-            }
-            if (event.type === 'critical') {
-                events.lastElementChild.classList.add('event-critical');
-                events.lastElementChild.children[4].classList.add('event');
-                events.lastElementChild.querySelector('.arrow-cross').setAttribute('src', 'images/cross-white.svg');
             }
         });
     }
-
     if (isTouchDevice()) {
-        const icons = document.body.querySelectorAll('.arrow-cross, .arrow-right');
+        const icons = document.body.querySelectorAll(".arrow-cross, .arrow-right");
         icons.forEach((icon) => {
-            icon.style.display = 'block';
+            icon.style.display = "block";
         });
     }
-
-    document.body.querySelector('.icon-menu').addEventListener('click', () => {
-        document.body.querySelector('nav ul').classList.toggle('menu-active');
-        document.body.querySelector('.icon-menu').classList.toggle('icon-menu-open');
-        document.body.querySelector('.icon-menu').classList.toggle('icon-menu-close');
-    });
-}());
+    const iconMenu = document.body.querySelector(".icon-menu");
+    if (iconMenu) {
+        iconMenu.addEventListener("click", () => {
+            const menu = document.body.querySelector("nav ul");
+            if (menu) {
+                menu.classList.toggle("menu-active");
+            }
+            iconMenu.classList.toggle("icon-menu-open");
+            iconMenu.classList.toggle("icon-menu-close");
+        });
+    }
+})();

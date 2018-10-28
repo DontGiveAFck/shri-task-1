@@ -321,30 +321,7 @@
         let trackTitle: HTMLElement | null;
 
         if (template) {
-            eventContainer = document.importNode(template.content, true);
-            icon = eventContainer.querySelector(".icon");
-            title = eventContainer.querySelector(".title");
-            source = eventContainer.querySelector(".source");
-            time = eventContainer.querySelector(".time");
-            description = eventContainer.querySelector(".description");
-            btnNegative = eventContainer.querySelector(".data .btn-negative");
-            btnPositive = eventContainer.querySelector(".data .btn-positive");
-            btnsRow = eventContainer.querySelector(".buttons-row");
-            humidity = eventContainer.querySelector(".humidity");
-            temp = eventContainer.querySelector(".temp");
-            tempValue = eventContainer.querySelector(".temp-value");
-            humidityValue = eventContainer.querySelector(".humidity-value");
-            tempHumidityRow = eventContainer.querySelector(".data .temp-humidity-row");
-            image = eventContainer.querySelector(".data .image");
-            imageInfo = eventContainer.querySelector(".image-info");
-            imageWrapper = eventContainer.querySelector(".image-wrapper");
-            trackIcon = eventContainer.querySelector(".track-icon");
-            trackLength = eventContainer.querySelector(".track-length");
-            volumeRange = eventContainer.querySelector(".volume-range");
-            volumePercentage = eventContainer.querySelector("volume-percentage");
-            music = eventContainer.querySelector(".music");
-            data = eventContainer.querySelector(".data");
-            trackTitle = eventContainer.querySelector(".track-title");
+
         }
 
         interface IEventIcons {
@@ -366,9 +343,33 @@
         };
 
         // build template and append to the page
-
-        input.events.forEach((event: IEvent) => {
+        const eventiki: IEvent[] = input.events as IEvent[];
+        eventiki.forEach((event) => {
             if (template) {
+                eventContainer = document.importNode(template.content, true);
+                icon = eventContainer.querySelector(".icon");
+                title = eventContainer.querySelector(".title");
+                source = eventContainer.querySelector(".source");
+                time = eventContainer.querySelector(".time");
+                description = eventContainer.querySelector(".description");
+                btnNegative = eventContainer.querySelector(".data .btn-negative");
+                btnPositive = eventContainer.querySelector(".data .btn-positive");
+                btnsRow = eventContainer.querySelector(".buttons-row");
+                humidity = eventContainer.querySelector(".humidity");
+                temp = eventContainer.querySelector(".temp");
+                tempValue = eventContainer.querySelector(".temp-value");
+                humidityValue = eventContainer.querySelector(".humidity-value");
+                tempHumidityRow = eventContainer.querySelector(".data .temp-humidity-row");
+                image = eventContainer.querySelector(".data .image");
+                imageInfo = eventContainer.querySelector(".image-info");
+                imageWrapper = eventContainer.querySelector(".image-wrapper");
+                trackIcon = eventContainer.querySelector(".track-icon");
+                trackLength = eventContainer.querySelector(".track-length");
+                volumeRange = eventContainer.querySelector(".volume-range");
+                volumePercentage = eventContainer.querySelector("volume-percentage");
+                music = eventContainer.querySelector(".music");
+                data = eventContainer.querySelector(".data");
+                trackTitle = eventContainer.querySelector(".track-title");
 
                 if (eventContainer) {
                     const eventIcon: string | null = event.icon;
@@ -499,32 +500,34 @@
                             data.remove();
                         }
                     }
-                    if (events && events.lastElementChild) {
+                    if (events) {
                         events.appendChild(eventContainer);
-                        switch (event.size) {
-                            case "l": {
-                                events.lastElementChild.classList.add("event-l");
-                                break;
+                        if (events.lastElementChild) {
+                            switch (event.size) {
+                                case "l": {
+                                    events.lastElementChild.classList.add("event-l");
+                                    break;
+                                }
+                                case "s": {
+                                    events.lastElementChild.classList.add("event-s");
+                                    break;
+                                }
+                                case "m": {
+                                    events.lastElementChild.classList.add("event-m");
+                                    break;
+                                }
+                                default: {
+                                    console.warn("smth wrong in input file");
+                                }
                             }
-                            case "s": {
-                                events.lastElementChild.classList.add("event-s");
-                                break;
-                            }
-                            case "m": {
-                                events.lastElementChild.classList.add("event-m");
-                                break;
-                            }
-                            default: {
-                                console.warn("smth wrong in input file");
-                            }
-                        }
-                        if (event.type === "critical") {
-                            events.lastElementChild.classList.add("event-critical");
-                            events.lastElementChild.children[4].classList.add("event");
-                            const arrowCross: HTMLImageElement | null = events.lastElementChild
-                                .querySelector(".arrow-cross");
-                            if (arrowCross) {
-                                arrowCross.setAttribute("src", "images/cross-white.svg");
+                            if (event.type === "critical") {
+                                events.lastElementChild.classList.add("event-critical");
+                                events.lastElementChild.children[4].classList.add("event");
+                                const arrowCross: HTMLImageElement | null = events.lastElementChild
+                                    .querySelector(".arrow-cross");
+                                if (arrowCross) {
+                                    arrowCross.setAttribute("src", "images/cross-white.svg");
+                                }
                             }
                         }
                     }

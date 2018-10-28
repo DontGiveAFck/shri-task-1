@@ -28,7 +28,7 @@
     const analyzeInstances: HTMLVideoElement[] = [];
 
     let mediaElementSource;
-    let stopLighting: number;
+    let stopLighting: number | undefined;
     let videoOpened: boolean = false;
     let openedCanvas: number = 0;
 
@@ -139,7 +139,7 @@
                     analyzer(video);
                     analyzeInstances.push(video);
                 }
-                stopLighting = setInterval(getLightingLevel.bind(null, video), 1000);
+                stopLighting = window.setInterval(getLightingLevel.bind(null, video), 1000);
                 videoOpened = true;
             }
         });
