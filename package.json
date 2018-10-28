@@ -6,7 +6,8 @@
   "scripts": {
     "start": "run-p server murphy",
     "server": "ts-node server.ts",
-    "murphy": "murphy"
+    "murphy": "murphy",
+    "ts-compile": "tsc"
   },
   "repository": {
     "type": "git",

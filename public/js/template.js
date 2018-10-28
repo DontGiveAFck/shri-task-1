@@ -1,23 +1,5 @@
 "use strict";
 (() => {
-    // get event list from the server
-    /*
-    window.onload = () => {
-        const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                return addEvents(JSON.parse(xhr.response));
-            }
-        };
-        if (document.location) {
-            xhr.open(
-                "GET",
-                `${document.location.protocol}//${document.location.host}/api/events${window.location.search}`,
-            );
-        }
-        xhr.send();
-    };
-    */
     const list = [
         {
             type: "info",
