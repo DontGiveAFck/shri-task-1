@@ -60,6 +60,7 @@ html {
 * {
     box-sizing: border-box;
 }
+
 .header {
     padding: 34px 42px;
     display: flex;
@@ -105,7 +106,6 @@ nav ul li a{
 nav ul li .selected {
     opacity: 1;
 }
-
 h1.title {
     font-weight: bold;
     font-family: Arial, sans-serif;
@@ -569,10 +569,10 @@ p.track-title {
 }
 
 .icon-menu-close {
-    background: url("images/menu-cross.png") no-repeat;
+    background: url("../images/menu-cross.png") no-repeat;
 }
 .icon-menu-open {
-    background: url("images/icon_list_m.png") no-repeat;
+    background: url("../images/icon_list_m.png") no-repeat;
 
 }
 

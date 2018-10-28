@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test streams</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <link rel="stylesheet" href="styles/cameras.css">
+</head>
+<body>
+<header class="header">
+    <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="logo">
+    </a>
+    <nav>
+        <ul class="menu">
+            <li><a href="/">События</a></li>
+            <li><a href="#">Сводка</a></li>
+            <li><a href="#">Устройства</a></li>
+            <li><a href="#">Сценарии</a></li>
+            <li><a href="/cameras" class="selected">Видеонаблюдение</a></li>
+        </ul>
+        <div class="icon-menu icon-menu-open"></div>
+    </nav>
+</header>
+<hr>
+<main class="main">
+    <h1 class="title">Видеонаблюдение</h1>
+    <div class="wrapper">
+            <video id="video-1" class="video" muted autoplay></video>
+            <video id="video-2" class="video" muted autoplay></video>
+            <video id="video-3" class="video" muted autoplay></video>
+            <video id="video-4" class="video" muted autoplay></video>
+        <div class="controls-panel">
+            <button class="btn btn-all-cameras">Все камеры</button>
+            <button class="btn btn-analyzator">Анализатор громкости</button>
+            <span class="control brightness">
+                Яркость <br>
+                <input type="range" min="0" max="200">
+                <span>100</span>
+            </span>
+            <span class="control contrast">
+                Контрастность <br>
+                <input type="range" min="0" max="200">
+                <span>100</span>
+            </span>
+            <span class="lighting">
+            </span>
+            <canvas class="sound-diagram" height="64px"></canvas>
+            <canvas class="sound-diagram" height="64px"></canvas>
+            <canvas class="sound-diagram" height="64px"></canvas>
+            <canvas class="sound-diagram" height="64px"></canvas>
+        </div>
+        <div class="bg">
+        </div>
+    </div>
+</main>
+<script src="js/initVideos.js"></script>
+<script type="module" src="js/cameras.js"></script>
+</body>
+</html>
