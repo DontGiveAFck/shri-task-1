@@ -210,16 +210,12 @@
             if (event.data.image) {
                     var img = eventContainer.querySelector('.image');
                     img.setAttribute('src', 'images/md.png');
-                    img.setAttribute('srcset', 'images/sm.png 832w, images/lg.png 2496w');
-                    img.setAttribute('sizes', '(max-width: 648px) 832px, (min-width: 1600) 2496px');
-
-                    if(isTouchDevice() && !isImageAdded) {
-                        isImageAdded = true;
-                        var wrapper = eventContainer.querySelector('.image-wrapper');
-                        wrapper.style.backgroundImage = 'url("images/sm.png")';
-                        wrapper.style.width = '100%';
-                        img.style.visibility = 'hidden';
-                        img.style.pointerEvents = 'none';
+                    var wrapper = eventContainer.querySelector('.image-wrapper');
+                    wrapper.style.backgroundImage = 'url("images/sm.png")';
+                    wrapper.style.width = '100%';
+                    img.style.visibility = 'hidden';
+                    img.style.pointerEvents = 'none';
+                    if(isTouchDevice()) {
                         eventContainer.querySelector('.image-info').style.display = 'flex';
                     }
             } else {
