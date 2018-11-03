@@ -418,11 +418,6 @@
                         if (event.data.image) {
                             if (image) {
                                 image.setAttribute("src", "images/md.png");
-                                image.setAttribute("srcset", "images/sm.png 832w, images/lg.png 2496w");
-                                image.setAttribute("sizes", "(max-width: 648px) 832px, (min-width: 1600) 2496px");
-                            }
-
-                            if (isTouchDevice() && !isImageAdded) {
                                 isImageAdded = true;
                                 let wrapper: HTMLElement | null;
                                 wrapper = eventContainer.querySelector(".image-wrapper");
@@ -430,14 +425,15 @@
                                     wrapper.style.backgroundImage = 'url("images/sm.png")';
                                     wrapper.style.width = "100%";
                                 }
-                                if (image) {
-                                    image.style.visibility = "hidden";
-                                    image.style.pointerEvents = "none";
-                                }
+
+                                image.style.visibility = "hidden";
+                                image.style.pointerEvents = "none";
+                            }
+
+                            if (isTouchDevice() && !isImageAdded) {
                                 if (imageInfo) {
                                     imageInfo.style.display = "flex";
                                 }
-
                             }
                         } else {
                             if (event.data.type !== "graph") {
