@@ -1,6 +1,5 @@
-"use strict";
 (() => {
-    const list = [
+    const list: object[] = [
         {
             type: "info",
             title: "Еженедельный отчет по расходам ресурсов",
@@ -224,56 +223,93 @@
             size: "s",
         },
     ];
+
     // check, if device has a touch screen
     function isTouchDevice() {
         const prefixes = " -webkit- -moz- -o- -ms- ".split(" ");
-        const mq = (queryCheck) => {
+        const mq = (queryCheck: string) => {
             return window.matchMedia(queryCheck).matches;
         };
+
         if (("ontouchstart" in window)) {
             return true;
         }
         const query = ["(", prefixes.join("touch-enabled),("), "heartz", ")"].join("");
         return mq(query);
     }
+
+    interface IData {
+        artist: string | undefined;
+        albumcover: string | undefined;
+        buttons: string[] | undefined;
+        track: {
+            name: string | undefined,
+            length: string | undefined,
+        };
+        volume: number | undefined;
+        type: string | undefined;
+        humidity: number | null;
+        temperature: number | null;
+        image: string | null;
+    }
+
+    interface IEvent {
+        icon: string;
+        title: string;
+        source: string;
+        type: string;
+        time: string;
+        description: string | null;
+        data: IData | undefined;
+        size: string;
+    }
+
     addEvents(list);
+
     // add events that come from the server
-    function addEvents(eventsList) {
-        const input = {
+    function addEvents(eventsList: object[]) {
+        const input: {[events: string]: object[]} = {
             events: [],
         };
         input.events = eventsList;
         let isImageAdded = false;
-        const template = document.querySelector(".template");
-        const events = document.querySelector(".events");
+        const template: HTMLTemplateElement | null = document.querySelector(".template");
+        const events: HTMLElement | null = document.querySelector(".events");
+
         // events properties
-        let eventContainer;
-        let icon;
-        let title;
-        let source;
-        let time;
-        let description;
-        let btnNegative;
-        let btnPositive;
-        let btnsRow;
-        let humidity;
-        let temp;
-        let tempValue;
-        let humidityValue;
-        let tempHumidityRow;
-        let image;
-        let imageInfo;
-        let imageWrapper;
-        let trackIcon;
-        let trackLength;
-        let volumeRange;
-        let volumePercentage;
-        let music;
-        let data;
-        let trackTitle;
+        let eventContainer: DocumentFragment | null;
+        let icon: HTMLElement | null;
+        let title: HTMLElement | null;
+        let source: HTMLElement | null;
+        let time: HTMLElement | null;
+        let description: HTMLElement | null;
+        let btnNegative: HTMLElement | null;
+        let btnPositive: HTMLElement | null;
+        let btnsRow: HTMLElement | null;
+        let humidity: HTMLElement | null;
+        let temp: HTMLElement | null;
+        let tempValue: HTMLElement | null;
+        let humidityValue: HTMLElement | null;
+        let tempHumidityRow: HTMLElement | null;
+        let image: HTMLImageElement | null;
+        let imageInfo: HTMLElement | null;
+        let imageWrapper: HTMLElement | null;
+        let trackIcon: HTMLImageElement | null;
+        let trackLength: HTMLElement | null;
+        let volumeRange: HTMLInputElement | null;
+        let volumePercentage: HTMLElement | null;
+        let music: HTMLElement | null;
+        let data: HTMLElement | null;
+        let trackTitle: HTMLElement | null;
+
         if (template) {
+
         }
-        const eventIcons = {
+
+        interface IEventIcons {
+            [eventIcon: string]: string;
+        }
+        const eventIcons: IEventIcons = {
             "ac": "images/ac-white.svg",
             "ac-white": "images/ac-white.svg",
             "battery": "images/battery.svg",
@@ -287,8 +323,9 @@
             "stats": "images/stats.svg",
             "thermal": "images/thermal.svg",
         };
+
         // build template and append to the page
-        const eventiki = input.events;
+        const eventiki: IEvent[] = input.events as IEvent[];
         eventiki.forEach((event) => {
             if (template) {
                 eventContainer = document.importNode(template.content, true);
@@ -315,8 +352,9 @@
                 music = eventContainer.querySelector(".music");
                 data = eventContainer.querySelector(".data");
                 trackTitle = eventContainer.querySelector(".track-title");
+
                 if (eventContainer) {
-                    const eventIcon = event.icon;
+                    const eventIcon: string | null = event.icon;
                     if (icon && event.icon) {
                         icon.setAttribute("src", eventIcons[eventIcon]);
                     }
@@ -329,11 +367,11 @@
                     if (time) {
                         time.textContent = event.time;
                     }
+
                     if (description) {
                         if (event.description) {
                             description.textContent = event.description;
-                        }
-                        else {
+                        } else {
                             description.remove();
                         }
                     }
@@ -345,11 +383,12 @@
                             if (btnNegative) {
                                 btnNegative.textContent = event.data.buttons[1];
                             }
-                        }
-                        else {
+
+                        } else {
                             if (btnsRow) {
                                 btnsRow.remove();
                             }
+
                         }
                         if (event.data.humidity) {
                             if (humidity) {
@@ -364,8 +403,8 @@
                             if (humidityValue) {
                                 humidityValue.textContent = `${event.data.humidity} %`;
                             }
-                        }
-                        else {
+
+                        } else {
                             if (tempHumidityRow) {
                                 tempHumidityRow.remove();
                             }
@@ -374,27 +413,29 @@
                             if (image) {
                                 image.setAttribute("src", "images/Richdata.png");
                             }
+
                         }
                         if (event.data.image) {
                             if (image) {
                                 image.setAttribute("src", "images/md.png");
                                 isImageAdded = true;
-                                let wrapper;
+                                let wrapper: HTMLElement | null;
                                 wrapper = eventContainer.querySelector(".image-wrapper");
                                 if (wrapper) {
                                     wrapper.style.backgroundImage = 'url("images/sm.png")';
                                     wrapper.style.width = "100%";
                                 }
+
                                 image.style.visibility = "hidden";
                                 image.style.pointerEvents = "none";
                             }
+
                             if (isTouchDevice() && !isImageAdded) {
                                 if (imageInfo) {
                                     imageInfo.style.display = "flex";
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             if (event.data.type !== "graph") {
                                 if (image) {
                                     image.remove();
@@ -406,6 +447,7 @@
                             if (imageInfo) {
                                 imageInfo.remove();
                             }
+
                         }
                         if (event.data.track) {
                             if (trackIcon && event.data.albumcover) {
@@ -414,23 +456,24 @@
                             if (trackTitle) {
                                 trackTitle.textContent = `${event.data.artist} - ${event.data.track.name}`;
                             }
+
                             if (trackLength && event.data.track.length) {
                                 trackLength.textContent = event.data.track.length;
                             }
                             if (volumeRange && event.data.volume) {
                                 volumeRange.value = event.data.volume.toString();
                             }
+
                             if (volumePercentage && event.data.volume) {
                                 volumePercentage.textContent = `${event.data.volume}%`;
                             }
-                        }
-                        else {
+
+                        } else {
                             if (music) {
                                 music.remove();
                             }
                         }
-                    }
-                    else {
+                    } else {
                         if (data) {
                             data.remove();
                         }
@@ -458,7 +501,7 @@
                             if (event.type === "critical") {
                                 events.lastElementChild.classList.add("event-critical");
                                 events.lastElementChild.children[4].classList.add("event");
-                                const arrowCross = events.lastElementChild
+                                const arrowCross: HTMLImageElement | null = events.lastElementChild
                                     .querySelector(".arrow-cross");
                                 if (arrowCross) {
                                     arrowCross.setAttribute("src", "images/cross-white.svg");
@@ -470,16 +513,18 @@
             }
         });
     }
+
     if (isTouchDevice()) {
-        const icons = document.body.querySelectorAll(".arrow-cross, .arrow-right");
+        const icons: NodeListOf<HTMLImageElement> | null = document.body.querySelectorAll(".arrow-cross, .arrow-right");
         icons.forEach((icon) => {
             icon.style.display = "block";
         });
     }
-    const iconMenu = document.body.querySelector(".icon-menu");
+
+    const iconMenu: HTMLElement | null = document.body.querySelector(".icon-menu");
     if (iconMenu) {
         iconMenu.addEventListener("click", () => {
-            const menu = document.body.querySelector("nav ul");
+            const menu: HTMLElement | null = document.body.querySelector("nav ul");
             if (menu) {
                 menu.classList.toggle("menu-active");
             }
@@ -487,4 +532,5 @@
             iconMenu.classList.toggle("icon-menu-close");
         });
     }
+
 })();
