@@ -4,17 +4,17 @@ export default class Store {
         this.state = {};
     }
 
-    dispatch(action) {
-        /* данные обновляются в завимистости от типа */
-        this.subscribers.forEach(cb => cb(this.state, action));
-    }
-
-    // регистрирую reducers
     subscribe(callback) {
         this.subscribers.push(callback);
+    }
+
+    emitStateChange(action) {
+        this.subscribers.forEach(cb => cb(this.state, action));
     }
 
     getState() {
         return this.state;
     }
+
+
 }
