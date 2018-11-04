@@ -1,8 +1,6 @@
 import Store from './store.js';
-//import Dispatcher from './dispatcher';
 
 const store = new Store();
-//const dispatcher = new Dispatcher(store);
 
 // create an action
 const events = [
@@ -15,7 +13,7 @@ const events = [
 store.subscribe((state, action) => {
     switch (action.type) {
     case 'ADD_EVENTS': {
-        state.events = [...state.events, events];
+        state.events = events
         break;
     }
     default: return state;
