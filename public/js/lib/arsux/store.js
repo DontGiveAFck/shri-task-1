@@ -11,8 +11,7 @@ export default class Store {
     //вызываю все reducerы, а они выполняют обработку данных, если типа подходит и возращают state.
     dispatch(action) {
         /* данные обновляются в завимистости от типа */
-
-        this._changeState(action);
+        this.subscribers.forEach((cb) => cb(this.state, action));
     }
 
     // регистрирую reducers
@@ -22,9 +21,5 @@ export default class Store {
 
     getState() {
         return this.state;
-    }
-
-    _changeState(action) {
-        const oldState = this.getState();
     }
 }
