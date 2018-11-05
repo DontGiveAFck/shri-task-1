@@ -11,6 +11,7 @@
         xhr.send();
     };
 
+
     function isTouchDevice() {
         const prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
         const mq = function (query) {

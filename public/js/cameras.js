@@ -1,4 +1,6 @@
+import Store from "./lib/arsux/store.js";
 (function () {
+
     const videos = document.body.querySelectorAll('.video');
 
     const bg = document.body.querySelector('.bg');
@@ -40,6 +42,74 @@
     }
 
     const context = new AudioContext();
+
+    // Framework usage
+
+    // reducer creation
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case 'OPEN_VIDEO': {
+                store.updateState({
+                    ...state,
+                    openedVideo: action.payload
+                })
+                break;
+            }
+            case 'CLOSE_VIDEO': {
+                store.updateState({
+                    ...state,
+                    [action.payload.videoId]: {
+                        brightness: action.payload.brightness,
+                        contrast: action.payload.contrast,
+                    },
+                    openedVideo: false
+                });
+                break;
+            }
+        }
+    };
+
+    // create store, add initial state, reducers to the store
+    const initialState = {
+        openedVideo: false,
+        'video-1': {
+            brightness: '100',
+            contrast: '100'
+        },
+        'video-2': {
+            brightness: '100',
+            contrast: '100'
+        },
+        'video-3': {
+            brightness: '100',
+            contrast: '100'
+        },
+        'video-4': {
+            brightness: '100',
+            contrast: '100'
+        },
+    }
+
+    const store = new Store(initialState, reducer);
+
+    // create a view controllers
+    const openVideoController = (state) => {
+        const video = document.querySelector(`#${state.openedVideo}`);
+
+        video.style.filter = `brightness(${state[state.openedVideo].brightness}%)`;
+        video.style.filter = `contrast(${state[state.openedVideo].contrast}%)`;
+        brightnessRange.value = state[state.openedVideo].brightness;
+        contrastRange.value = state[state.openedVideo].contrast;
+        brightnessLabel.innerText = state[state.openedVideo].brightness;
+        contrastLabel.innerText = state[state.openedVideo].contrast;
+
+        console.log(state);
+    };
+
+    const closeVideoController = state => console.log(state);
+
+    store.subscribe('OPEN_VIDEO', openVideoController);
+    store.subscribe('CLOSE_VIDEO', closeVideoController);
 
 
     // full screen video
@@ -120,6 +190,10 @@
     videos.forEach((video, i) => {
         video.addEventListener('click', () => {
             if (!video.classList.contains('video-opened')) {
+                store.dispatch({
+                    type: 'OPEN_VIDEO',
+                    payload: video.id
+                })
                 video.muted = false;
                 videoScreenFit(video);
                 openedCanvas = i;
@@ -139,6 +213,16 @@
         opened.classList.remove('video-opened');
         opened.muted = true;
         opened.style.transform = 'unset';
+
+        store.dispatch({
+            type: "CLOSE_VIDEO",
+            payload: {
+                videoId: opened.id,
+                brightness: brightnessRange.value,
+                contrast: contrastRange.value,
+            }
+        });
+
         bg.classList.toggle('bg-opened');
         controlsPanel.classList.remove('controls-panel-opened');
         canvases[openedCanvas].classList.remove('sound-diagram-opened');

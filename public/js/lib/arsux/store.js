@@ -1,5 +1,5 @@
 export default class Store {
-    constructor(...reducers) {
+    constructor(initialState, ...reducers) {
         // view controllers, that listen for state change
         this.subscribers = []; // example: [{actionType: 'action1', cb: doSomething()}]
 
@@ -7,16 +7,16 @@ export default class Store {
         this.reducers = [...reducers];
 
         // current state
-        this.state = {};
+        this.state = initialState || {};
     }
 
     dispatch(action) {
-        // 1. change state
+        // change state
         this.reducers.forEach((reducer) => {
-            reducer(this.state,  action);
+            reducer(this.state, action);
         });
 
-        // 2. tell to all subscribers, that state has changed
+        // tell to all subscribers, that state has changed
         this.subscribers.forEach((subscriber) => {
             if (subscriber.actionType === action.type) {
                 subscriber.cb(this.state);
@@ -24,12 +24,16 @@ export default class Store {
         });
     }
 
-    // subscribe ViewController to state changing with specified action
+    // subscribe ViewController to state changing with specified action type
     subscribe(type, viewController) {
         this.subscribers.push({
             actionType: type,
             cb: viewController,
         });
+    }
+
+    updateState(newState) {
+        this.state = newState;
     }
 
     // get current state
