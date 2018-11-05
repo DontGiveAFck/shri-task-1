@@ -10,6 +10,40 @@ npm start <br>
 В директории server/ - серверные <br>
 В корневой директории server.js <br>
 
+## **Задание 7** - архитектура
+Была реализована библиотека, основанная на flux подходе. <br>
+Файлы библиотеки находятся здесь: <b>./public/js/lib/arsux </b>
+
+Store и Dispatcher Объединены в один класс - Store. <br>
+<b>Принцип работы: </b> <br>
+<b>(Все примеры из проекта)</b> <br>
+1. Объявляются reducers - функции, которые принимают текущее состояние и событие, возвращают новое (unmutuble) состояние в зависимости от поступившего события. <br>
+
+```    
+const reducer = (state, action) => { 
+         switch (action.type) {
+             case 'OPEN_VIDEO': {
+                 store.updateState({
+                     ...state,
+                     openedVideo: action.payload
+                 })
+                 break;
+             }
+             case 'CLOSE_VIDEO': {
+                 store.updateState({
+                     ...state,
+                     [action.payload.videoId]: {
+                         brightness: action.payload.brightness,
+                         contrast: action.payload.contrast,
+                     },
+                     openedVideo: false
+                 });
+                 break;
+             }
+         }
+     };
+```
+
 ## **Задание 3**
 перейти на http://localhost:8000/cameras.html
 
