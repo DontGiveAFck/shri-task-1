@@ -193,7 +193,7 @@ import Store from "./lib/arsux/store.js";
                 store.dispatch({
                     type: 'OPEN_VIDEO',
                     payload: video.id
-                })
+                });
                 video.muted = false;
                 videoScreenFit(video);
                 openedCanvas = i;
@@ -255,7 +255,6 @@ import Store from "./lib/arsux/store.js";
     // hamburger menu
     document.body.querySelector('.icon-menu').addEventListener('click', () => {
         document.body.querySelector('.menu').classList.toggle('menu-active');
-        console.log(document.body.querySelector('.menu'));
         document.body
             .querySelector('.icon-menu')
             .classList.toggle('icon-menu-open');

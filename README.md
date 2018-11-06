@@ -1,4 +1,4 @@
-#### Жесты из 2 задания временно не работают т.к. данные карточек приходят с сервера (было реализовано во 4 задании)
+#### Жесты из 2 задания временно не работают т.к. данные карточек приходят с сервера (было реализовано в 4 задании)
 
 # Запуск: <br>
 npm i <br>
@@ -14,39 +14,123 @@ npm start <br>
 Была реализована библиотека, основанная на flux подходе. <br>
 Файлы библиотеки находятся здесь: <b>./public/js/lib/arsux </b>
 
-Store и Dispatcher Объединены в один класс - Store. <br>
-<b>Принцип работы: </b> <br>
-<b>(Все примеры из проекта)</b> <br>
-1. Объявляются reducers - функции, которые принимают текущее состояние и событие, возвращают новое (unmutuble) состояние в зависимости от поступившего события. <br>
+#### API библиотеки
+```
+// Объявление хранилища, передача начального состояния и редьюсеров.
+const store = new Store(< initialState or null >, <reducers...>);  <br>
+// Подписываем контроллер на получение состояния при его изменении. Контроллер должен принимать state первым аргументом. 
+store.subscribe('SOME_ACTION', usefullController);
+// Диспатчим события
+store.dispatch({
+    type: 'SOME_ACTION',
+    payload: usefullPayload
+});
+```
+#### Пример работы: <br>
+<b>Камеры во вкладке "Видеонаблюдение" при разворачивании и сворачивании обновляют состояние - сохраняют и вытаскивают brightness и contrast(Все примеры из проекта)</b> <br> <br>
+При разворачивании и сворачивании видео в консоль логируется текущее состояние state.
+<br> <br>
+1.Объявляются reducers - функции, которые принимают текущее состояние и событие, возвращают новое (unmutuble) состояние в зависимости от поступившего события. <br>
 
 ```    
-const reducer = (state, action) => { 
-         switch (action.type) {
-             case 'OPEN_VIDEO': {
-                 store.updateState({
-                     ...state,
-                     openedVideo: action.payload
-                 })
-                 break;
+    const reducer = (state, action) => { 
+             switch (action.type) {
+                 case 'OPEN_VIDEO': {
+                     store.updateState({
+                         ...state,
+                         openedVideo: action.payload
+                     })
+                     break;
+                 }
+                 case 'CLOSE_VIDEO': {
+                     store.updateState({
+                         ...state,
+                         [action.payload.videoId]: {
+                             brightness: action.payload.brightness,
+                             contrast: action.payload.contrast,
+                         },
+                         openedVideo: false
+                     });
+                     break;
+                 }
              }
-             case 'CLOSE_VIDEO': {
-                 store.updateState({
-                     ...state,
-                     [action.payload.videoId]: {
-                         brightness: action.payload.brightness,
-                         contrast: action.payload.contrast,
-                     },
-                     openedVideo: false
-                 });
-                 break;
-             }
-         }
-     };
+         };
 ```
 
+2.В начале файла импортируем Store:
+
+```
+import Store from "./lib/arsux/store.js";
+```
+Далее по желанию объявляем начальное initialState состояние, если объявляем initialState,то в конструктор первым аргументом передаем его, если нет, то null - будет пустым. Следующими параметрами передаем reducers:
+```
+    const initialState = {
+        openedVideo: false,
+        'video-1': {
+            brightness: '100',
+            contrast: '100'
+        },
+        'video-2': {
+            brightness: '100',
+            contrast: '100'
+        },
+        'video-3': {
+            brightness: '100',
+            contrast: '100'
+        },
+        'video-4': {
+            brightness: '100',
+            contrast: '100'
+        },
+    }
+
+    const store = new Store(initialState, reducer);
+```
+
+3.Объявляем функции-обработчики (предположительно view controllers), которые будут слушать изменения в store по определенным событиям и вызываться после его изменения. Первым аргументом функции получают новое состояние:
+```
+    const openVideoController = (state) => {
+        const video = document.querySelector(`#${state.openedVideo}`);
+
+        video.style.filter = `brightness(${state[state.openedVideo].brightness}%)`;
+        video.style.filter = `contrast(${state[state.openedVideo].contrast}%)`;
+        brightnessRange.value = state[state.openedVideo].brightness;
+        contrastRange.value = state[state.openedVideo].contrast;
+        brightnessLabel.innerText = state[state.openedVideo].brightness;
+        contrastLabel.innerText = state[state.openedVideo].contrast;
+
+        console.log(state);
+    };
+
+    const closeVideoController = state => console.log(state);
+```
+4.Подписываем функции обработчики на изменения в store по определенным action, после которых они должны принимать новое состояние.
+```
+    store.subscribe('OPEN_VIDEO', openVideoController);
+    store.subscribe('CLOSE_VIDEO', closeVideoController);
+```
+
+5.Далее "диспатчим экшеным" используя store.dispatch(), передаем аргументом объект, который содержит свойства type - тип события и payload - что положить / изменить в state.
+```
+    store.dispatch({
+        type: 'OPEN_VIDEO',
+        payload: video.id
+    });
+```
+
+```
+    store.dispatch({
+        type: "CLOSE_VIDEO",
+        payload: {
+            videoId: opened.id,
+            brightness: brightnessRange.value,
+            contrast: contrastRange.value,
+        }
+    });
+```
 ## **Задание 3**
 перейти на http://localhost:8000/cameras.html
-
+    
 - Реализованы все обязательные пункты задания и определение освещенности из дополнительных.
 - Отлаживал на условно последних браузерах Desktop Chrome, Android Chrome через Chrome dev tools - не возможности постоянно тестировать на моб. устройстве
 - Использовал тестовые потоки - перенес их себе в проект.
