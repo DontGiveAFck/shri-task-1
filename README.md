@@ -167,6 +167,13 @@ dispatcher.addReducers(reducer);
         }
     });
 ```
+
+### Тесты 
+<b>Для запуска тестов: </b>
+```
+npm run test:flux
+```
+
 ## **Задание 3**
 перейти на http://localhost:8000/cameras.html
     

@@ -93,6 +93,8 @@ import Emitter from './lib/arsux/emitter.js';
                 });
                 break;
             }
+
+            default: return state;
         }
     };
 

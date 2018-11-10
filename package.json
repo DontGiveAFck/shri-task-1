@@ -7,7 +7,7 @@
     "start": "run-p server murphy",
     "server": "nodemon server.js",
     "murphy": "murphy",
-    "test": "babel-node ./public/js/lib/arsux/store.test.js"
+    "test:flux": "./node_modules/mocha/bin/mocha --compilers js:@babel/register public/js/lib/arsux/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,9 @@
   },
   "homepage": "https://github.com/DontGiveAFck/shri-task-1#readme",
   "dependencies": {
+    "@babel/preset-env": "^7.1.5",
+    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "@babel/register": "^7.0.0",
     "@videojs/murphy": "^0.1.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
@@ -28,7 +31,11 @@
     "npm-run-all": "^4.1.3"
   },
   "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "babel-cli": "^6.26.0",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-preset-env": "^1.7.0",
     "chai": "^4.2.0",
     "eslint": "^5.7.0",

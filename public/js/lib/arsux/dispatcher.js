@@ -27,4 +27,9 @@ export default class Dispatcher {
             store.trigger(action);
         });
     }
+
+    // get reducers
+    _getReducers() {
+        return this.reducers;
+    }
 }
