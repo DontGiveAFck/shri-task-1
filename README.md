@@ -3,6 +3,7 @@
 # Запуск: <br>
 npm i <br>
 npm start <br>
+Перейти на http://localhost:8000/cameras.html
 
 Запускается сервер с nodejs(express) с тестовыми потоками
 
