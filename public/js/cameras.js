@@ -1,4 +1,6 @@
-import Store from "./lib/arsux/store.js";
+import Dispatcher from './lib/arsux/dispatcher.js';
+import Store from './lib/arsux/store.js';
+import Emitter from './lib/arsux/emitter.js';
 (function () {
 
     const videos = document.body.querySelectorAll('.video');
@@ -45,6 +47,31 @@ import Store from "./lib/arsux/store.js";
 
     // Framework usage
 
+    // create store, add initial state, reducers to the store
+    const initialState = {
+        openedVideo: false,
+        'video-1': {
+            brightness: '100',
+            contrast: '100'
+        },
+        'video-2': {
+            brightness: '100',
+            contrast: '100'
+        },
+        'video-3': {
+            brightness: '100',
+            contrast: '100'
+        },
+        'video-4': {
+            brightness: '100',
+            contrast: '100'
+        },
+    }
+
+    const emitter = new Emitter();
+    const store = new Store(initialState, emitter);
+    const dispatcher = new Dispatcher(store);
+
     // reducer creation
     const reducer = (state, action) => {
         switch (action.type) {
@@ -69,33 +96,12 @@ import Store from "./lib/arsux/store.js";
         }
     };
 
-    // create store, add initial state, reducers to the store
-    const initialState = {
-        openedVideo: false,
-        'video-1': {
-            brightness: '100',
-            contrast: '100'
-        },
-        'video-2': {
-            brightness: '100',
-            contrast: '100'
-        },
-        'video-3': {
-            brightness: '100',
-            contrast: '100'
-        },
-        'video-4': {
-            brightness: '100',
-            contrast: '100'
-        },
-    }
-
-    const store = new Store(initialState, reducer);
+    // add reducers to dispatcher
+    dispatcher.addReducers(reducer);
 
     // create a view controllers
     const openVideoController = (state) => {
         const video = document.querySelector(`#${state.openedVideo}`);
-
         video.style.filter = `brightness(${state[state.openedVideo].brightness}%)`;
         video.style.filter = `contrast(${state[state.openedVideo].contrast}%)`;
         brightnessRange.value = state[state.openedVideo].brightness;
@@ -108,6 +114,7 @@ import Store from "./lib/arsux/store.js";
 
     const closeVideoController = state => console.log(state);
 
+    // subscribe view controllers to listening store changing
     store.subscribe('OPEN_VIDEO', openVideoController);
     store.subscribe('CLOSE_VIDEO', closeVideoController);
 
@@ -190,7 +197,7 @@ import Store from "./lib/arsux/store.js";
     videos.forEach((video, i) => {
         video.addEventListener('click', () => {
             if (!video.classList.contains('video-opened')) {
-                store.dispatch({
+                dispatcher.dispatch({
                     type: 'OPEN_VIDEO',
                     payload: video.id
                 });
@@ -214,7 +221,7 @@ import Store from "./lib/arsux/store.js";
         opened.muted = true;
         opened.style.transform = 'unset';
 
-        store.dispatch({
+        dispatcher.dispatch({
             type: "CLOSE_VIDEO",
             payload: {
                 videoId: opened.id,

@@ -1,43 +1,34 @@
 export default class Store {
-    constructor(initialState, ...reducers) {
-        // view controllers, that listen for state change
-        this.subscribers = []; // example: [{actionType: 'action1', cb: doSomething()}]
-
-        // functions, that describe how state will change on specified action
-        this.reducers = [...reducers];
-
+    constructor(initialState, emitter) {
         // current state
         this.state = initialState || {};
+
+        // event emitter
+        this.emitter = emitter;
     }
 
-    dispatch(action) {
-        // change state
-        this.reducers.forEach((reducer) => {
-            reducer(this.state, action);
-        });
-
-        // tell to all subscribers, that state has changed
-        this.subscribers.forEach((subscriber) => {
-            if (subscriber.actionType === action.type) {
-                subscriber.cb(this.state);
-            }
-        });
+    // call all callbacks with specified action type
+    trigger(action) {
+        this.emitter.emit(action.type, this.state);
     }
 
-    // subscribe ViewController to state changing with specified action type
-    subscribe(type, viewController) {
-        this.subscribers.push({
-            actionType: type,
-            cb: viewController,
-        });
+    // subscribe callback to execute when specified action dispatched
+    subscribe(actionType, cb) {
+        this.emitter.bind(actionType, cb);
     }
 
+    // subscribe callback
+    unsubscribe(actionType, cb) {
+        this.emitter.unbind(actionType, cb);
+    }
+
+    // ONLY for dispatcher usage
+    getStateForDispatcher() {
+        return this.state;
+    }
+
+    // ONLY for reducers usage
     updateState(newState) {
         this.state = newState;
-    }
-
-    // get current state
-    getState() {
-        return this.state;
     }
 }
