@@ -1,4 +1,8 @@
+import Dispatcher from './lib/arsux/dispatcher.js';
+import Store from './lib/arsux/store.js';
+import Emitter from './lib/arsux/emitter.js';
 (function () {
+
     const videos = document.body.querySelectorAll('.video');
 
     const bg = document.body.querySelector('.bg');
@@ -40,6 +44,81 @@
     }
 
     const context = new AudioContext();
+
+    // Framework usage
+
+    // create store, add initial state, reducers to the store
+    const initialState = {
+        openedVideo: false,
+        'video-1': {
+            brightness: '100',
+            contrast: '100'
+        },
+        'video-2': {
+            brightness: '100',
+            contrast: '100'
+        },
+        'video-3': {
+            brightness: '100',
+            contrast: '100'
+        },
+        'video-4': {
+            brightness: '100',
+            contrast: '100'
+        },
+    }
+
+    const emitter = new Emitter();
+    const store = new Store(initialState, emitter);
+    const dispatcher = new Dispatcher(store);
+
+    // reducer creation
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case 'OPEN_VIDEO': {
+                store.updateState({
+                    ...state,
+                    openedVideo: action.payload
+                })
+                break;
+            }
+            case 'CLOSE_VIDEO': {
+                store.updateState({
+                    ...state,
+                    [action.payload.videoId]: {
+                        brightness: action.payload.brightness,
+                        contrast: action.payload.contrast,
+                    },
+                    openedVideo: false
+                });
+                break;
+            }
+
+            default: return state;
+        }
+    };
+
+    // add reducers to dispatcher
+    dispatcher.addReducers(reducer);
+
+    // create a view controllers
+    const openVideoController = (state) => {
+        const video = document.querySelector(`#${state.openedVideo}`);
+        video.style.filter = `brightness(${state[state.openedVideo].brightness}%)`;
+        video.style.filter = `contrast(${state[state.openedVideo].contrast}%)`;
+        brightnessRange.value = state[state.openedVideo].brightness;
+        contrastRange.value = state[state.openedVideo].contrast;
+        brightnessLabel.innerText = state[state.openedVideo].brightness;
+        contrastLabel.innerText = state[state.openedVideo].contrast;
+
+        console.log(state);
+    };
+
+    const closeVideoController = state => console.log(state);
+
+    // subscribe view controllers to listening store changing
+    store.subscribe('OPEN_VIDEO', openVideoController);
+    store.subscribe('CLOSE_VIDEO', closeVideoController);
 
 
     // full screen video
@@ -120,6 +199,10 @@
     videos.forEach((video, i) => {
         video.addEventListener('click', () => {
             if (!video.classList.contains('video-opened')) {
+                dispatcher.dispatch({
+                    type: 'OPEN_VIDEO',
+                    payload: video.id
+                });
                 video.muted = false;
                 videoScreenFit(video);
                 openedCanvas = i;
@@ -139,6 +222,16 @@
         opened.classList.remove('video-opened');
         opened.muted = true;
         opened.style.transform = 'unset';
+
+        dispatcher.dispatch({
+            type: "CLOSE_VIDEO",
+            payload: {
+                videoId: opened.id,
+                brightness: brightnessRange.value,
+                contrast: contrastRange.value,
+            }
+        });
+
         bg.classList.toggle('bg-opened');
         controlsPanel.classList.remove('controls-panel-opened');
         canvases[openedCanvas].classList.remove('sound-diagram-opened');
@@ -171,7 +264,6 @@
     // hamburger menu
     document.body.querySelector('.icon-menu').addEventListener('click', () => {
         document.body.querySelector('.menu').classList.toggle('menu-active');
-        console.log(document.body.querySelector('.menu'));
         document.body
             .querySelector('.icon-menu')
             .classList.toggle('icon-menu-open');
